@@ -95,4 +95,6 @@ Em síntese, os três autores compartilham a convicção de que o Estado tem um 
 
 ## 4. Considerações Finais
 
-A leitura comparada de Smith, Hayek e Friedman revela, em primeiro lugar, que o liberalismo econômico não é uma doutrina monolítica, mas uma tradição intelectual rica, internamente diversa e em constante diálogo com os problemas de seu tempo. Os três autores compartilham um núcleo comum de valores — a primazia da liberdade.
+A leitura comparada de Smith, Hayek e Friedman revela, em primeiro lugar, que o liberalismo econômico não é uma doutrina monolítica, mas uma tradição intelectual rica, internamente diversa e em constante diálogo com os problemas de seu tempo. Os três autores compartilham um núcleo comum de valores — a primazia da liberdade individual, a confiança na coordenação descentralizada e a cautela diante da expansão do poder estatal.
+
+Ao mesmo tempo, suas diferenças de método e ênfase mostram que o liberalismo econômico abriga interpretações plurais sobre como equilibrar liberdade, prosperidade e ordem institucional. Essa diversidade interna é parte de sua força analítica e ajuda a qualificar o debate público contemporâneo.
