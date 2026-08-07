@@ -94,7 +94,9 @@ aprovação antes de escrever no disco ou rodar comandos.
 
 - [`02-claude-md-e-contexto.md`](./02-claude-md-e-contexto.md) — como dar
   contexto persistente sobre seu projeto.
-- [`03-comandos-e-atalhos.md`](./03-comandos-e-atalhos.md) — comandos
+- [`03-permissoes-basicas.md`](./03-permissoes-basicas.md) — como aprovar
+  (ou não) as ações do Claude Code.
+- [`04-comandos-e-atalhos.md`](./04-comandos-e-atalhos.md) — comandos
   essenciais e atalhos de teclado.
 
 > 📚 Fonte oficial: [code.claude.com/docs](https://code.claude.com/docs) —

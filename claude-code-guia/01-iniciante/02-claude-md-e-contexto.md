@@ -85,5 +85,5 @@ não precisa gerenciar isso manualmente no início — é bônus, não obrigaç�
 
 ## Próximo passo
 
-[`03-comandos-e-atalhos.md`](./03-comandos-e-atalhos.md) — comandos slash
-essenciais e atalhos de teclado do dia a dia.
+[`03-permissoes-basicas.md`](./03-permissoes-basicas.md) — como o Claude
+Code pede (ou não) sua aprovação antes de agir.
