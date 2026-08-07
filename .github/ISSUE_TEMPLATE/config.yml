@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 Documentação oficial do Claude Code
+    url: https://code.claude.com/docs
+    about: Consulte a fonte oficial antes de abrir uma issue sobre comportamento do produto.

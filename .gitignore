@@ -1,0 +1,22 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Node (caso exemplos de código sejam adicionados futuramente)
+node_modules/
+npm-debug.log*
+
+# Ambientes Python (caso exemplos de código sejam adicionados futuramente)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Diversos
+*.log
+.env
