@@ -1,3 +1,9 @@
+# ---
+title: "Skills e comandos customizados"
+description: "Introdução a skills e comandos customizados no Claude Code."
+slug: "/articles/claude-code-guia/02-intermediario/01-skills-e-comandos-customizados"
+---
+
 # 1. Skills e comandos customizados
 
 > Nível: Intermediário · Pré-requisito: nível Iniciante completo

@@ -1,4 +1,13 @@
 # Liberdade, Mercado e Estado: Uma Leitura Comparada dos Fundamentos do Liberalismo Econômico a partir de Smith, Hayek e Friedman
+# ---
+# title: "Liberdade, Mercado e Estado"
+# description: "Reflexões sobre liberdade, mercado e papel do Estado."
+# slug: "/articles/liberdade-mercado-estado"
+# ---
+
+## RESUMO
+
+O presente artigo propõe uma leitura comparada das contribuições de Adam Smith, Friedrich A. Hayek e Milton Friedman para o pensamento liberal econômico, a partir das obras introdutórias *Os Fundamentos do Capitalismo: O Essencial de Adam Smith*, de James R. Otteson; *Menos Estado e Mais Liberdade: O Essencial do Pensamento de F. A. Hayek*, de Donald J. Boudreaux; e *O Essencial de Milton Friedman*, de Steven Landsburg. A análise se organiza em torno de três eixos temáticos centrais ao liberalismo econômico: liberdade, mercado e Estado. Longe de pretender um julgamento normativo, o objetivo é apresentar, de forma didática e panorâmica, como cada um desses autores concebeu e articulou tais conceitos, contribuindo para a compreensão das bases intelectuais que sustentam o debate econômico contemporâneo. Conclui-se que, embora partilhem um núcleo comum de valorização da liberdade individual e da ordem espontânea do mercado, os três pensadores apresentam ênfases, métodos e implicações distintas, revelando a riqueza e a complexidade interna da tradição liberal.
 
 **Freedom, Market and State: A Comparative Reading of the Foundations of Economic Liberalism through Smith, Hayek and Friedman**
 

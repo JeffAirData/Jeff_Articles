@@ -1,6 +1,12 @@
+# ---
+title: "Subagentes: delegando tarefas para agentes especializados"
+description: "Explicação sobre subagentes e quando usá-los no Claude Code."
+slug: "/articles/claude-code-guia/02-intermediario/03-subagentes"
+---
+
 # 3. Subagentes: delegando tarefas para agentes especializados
 
-> Nível: Intermediário · Pré-requisito: [02-settings-permissoes-e-variaveis.md](./02-settings-permissoes-e-variaveis.md)
+> Nível: Intermediário · Pré-requisito: [02-settings-permissoes-e-variaveis.md](./02-settings-permisos-e-variaveis.md)
 
 ## O problema que subagentes resolvem
 

@@ -1,3 +1,9 @@
+# ---
+title: "settings.json: permissões persistentes e variáveis de ambiente"
+description: "Como configurar permissões e variáveis persistentes para o Claude Code."
+slug: "/articles/claude-code-guia/02-intermediario/02-settings-permissoes-e-variaveis"
+---
+
 # 2. settings.json: permissões persistentes e variáveis de ambiente
 
 > Nível: Intermediário · Pré-requisito: [01-skills-e-comandos-customizados.md](./01-skills-e-comandos-customizados.md)

@@ -1,3 +1,9 @@
+# ---
+title: "Instalação e primeiros passos"
+description: "Nível: Iniciante — instalação e primeiros passos para usar Claude Code."
+slug: "/articles/claude-code-guia/01-iniciante/01-instalacao-e-primeiros-passos"
+---
+
 # 1. Instalação e primeiros passos
 
 > Nível: Iniciante · Pré-requisito: nenhum

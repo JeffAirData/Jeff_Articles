@@ -1,3 +1,9 @@
+# ---
+title: "Enterprise, segurança e configuração para times"
+description: "Padrões de segurança e configuração para uso corporativo do Claude Code."
+slug: "/articles/claude-code-guia/03-avancado-senior/05-enterprise-seguranca-e-times"
+---
+
 # 5. Enterprise, segurança e configuração para times
 
 > Nível: Sênior/Avançado · Pré-requisito: [04-orquestracao-multi-agente.md](./04-orquestracao-multi-agente.md)

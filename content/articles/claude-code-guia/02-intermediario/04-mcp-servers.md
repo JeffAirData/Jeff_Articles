@@ -1,3 +1,9 @@
+# ---
+title: "MCP: conectando o Claude Code a ferramentas externas"
+description: "O que é MCP e como conectar o Claude a serviços externos."
+slug: "/articles/claude-code-guia/02-intermediario/04-mcp-servers"
+---
+
 # 4. MCP: conectando o Claude Code a ferramentas externas
 
 > Nível: Intermediário · Pré-requisito: [03-subagentes.md](./03-subagentes.md)

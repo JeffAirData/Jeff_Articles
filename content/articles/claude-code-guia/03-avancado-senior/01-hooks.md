@@ -1,3 +1,9 @@
+# ---
+title: "Hooks: automação determinística no ciclo de vida do agente"
+description: "Uso de hooks para automatizar ações determinísticas no Claude Code."
+slug: "/articles/claude-code-guia/03-avancado-senior/01-hooks"
+---
+
 # 1. Hooks: automação determinística no ciclo de vida do agente
 
 > Nível: Sênior/Avançado · Pré-requisito: nível Intermediário completo

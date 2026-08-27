@@ -1,3 +1,9 @@
+# ---
+title: "Orquestração multi-agente"
+description: "Padrões e práticas para coordenar múltiplos agentes em tarefas complexas."
+slug: "/articles/claude-code-guia/03-avancado-senior/04-orquestracao-multi-agente"
+---
+
 # 4. Orquestração multi-agente
 
 > Nível: Sênior/Avançado · Pré-requisito: [03-modo-headless-web-e-cicd.md](./03-modo-headless-web-e-cicd.md)

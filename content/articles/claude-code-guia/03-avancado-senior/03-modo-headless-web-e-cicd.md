@@ -1,3 +1,9 @@
+# ---
+title: "Modo headless, Claude Code na web e integração com CI/CD"
+description: "Execução não interativa (headless) e integração com pipelines CI/CD."
+slug: "/articles/claude-code-guia/03-avancado-senior/03-modo-headless-web-e-cicd"
+---
+
 # 3. Modo headless, Claude Code na web e integração com CI/CD
 
 > Nível: Sênior/Avançado · Pré-requisito: [02-agent-sdk.md](./02-agent-sdk.md)
