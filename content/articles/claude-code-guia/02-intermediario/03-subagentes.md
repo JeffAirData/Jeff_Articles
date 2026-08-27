@@ -2,6 +2,9 @@
 title: "Subagentes: delegando tarefas para agentes especializados"
 description: "Explicação sobre subagentes e quando usá-los no Claude Code."
 slug: "/articles/claude-code-guia/02-intermediario/03-subagentes"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 3. Subagentes: delegando tarefas para agentes especializados

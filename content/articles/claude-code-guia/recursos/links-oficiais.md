@@ -1,3 +1,9 @@
+---
+slug: "/articles/claude-code-guia"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
+---
 # Links oficiais e recursos complementares
 
 ## Documentação oficial (Anthropic)

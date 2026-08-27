@@ -2,6 +2,9 @@
 title: "Comandos slash essenciais e atalhos de teclado"
 description: "Lista de comandos e atalhos essenciais do Claude Code."
 slug: "/articles/claude-code-guia/01-iniciante/04-comandos-e-atalhos"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 4. Comandos slash essenciais e atalhos de teclado

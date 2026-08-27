@@ -2,6 +2,9 @@
 title: "Modo headless, Claude Code na web e integração com CI/CD"
 description: "Execução não interativa (headless) e integração com pipelines CI/CD."
 slug: "/articles/claude-code-guia/03-avancado-senior/03-modo-headless-web-e-cicd"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 3. Modo headless, Claude Code na web e integração com CI/CD

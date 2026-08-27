@@ -2,6 +2,9 @@
 title: "Enterprise, segurança e configuração para times"
 description: "Padrões de segurança e configuração para uso corporativo do Claude Code."
 slug: "/articles/claude-code-guia/03-avancado-senior/05-enterprise-seguranca-e-times"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 5. Enterprise, segurança e configuração para times

@@ -2,6 +2,9 @@
 title: "Claude Agent SDK: construindo seus próprios agentes"
 description: "Introdução ao Agent SDK para construir agentes programáticos com o motor do Claude."
 slug: "/articles/claude-code-guia/03-avancado-senior/02-agent-sdk"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 2. Claude Agent SDK: construindo seus próprios agentes

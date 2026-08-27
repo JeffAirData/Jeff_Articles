@@ -3,6 +3,9 @@
 title: "Liberdade, Mercado e Estado"
 description: "Reflexões sobre liberdade, mercado e papel do Estado."
 slug: "/articles/liberdade-mercado-estado"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 ## RESUMO

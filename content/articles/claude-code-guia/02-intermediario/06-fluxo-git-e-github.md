@@ -2,6 +2,9 @@
 title: "Fluxo com Git e GitHub"
 description: "Práticas e integração do Claude Code com Git e GitHub."
 slug: "/articles/claude-code-guia/02-intermediario/06-fluxo-git-e-github"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 6. Fluxo com Git e GitHub

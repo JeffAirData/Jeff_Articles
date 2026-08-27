@@ -2,6 +2,9 @@
 title: "MCP: conectando o Claude Code a ferramentas externas"
 description: "O que é MCP e como conectar o Claude a serviços externos."
 slug: "/articles/claude-code-guia/02-intermediario/04-mcp-servers"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 4. MCP: conectando o Claude Code a ferramentas externas

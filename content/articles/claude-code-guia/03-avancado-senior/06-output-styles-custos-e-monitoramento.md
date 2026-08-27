@@ -2,6 +2,9 @@
 title: "Output styles, status line e monitoramento de custo"
 description: "Como customizar saída e monitorar custo e tokens em sessões do Claude Code."
 slug: "/articles/claude-code-guia/03-avancado-senior/06-output-styles-custos-e-monitoramento"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 6. Output styles, status line e monitoramento de custo

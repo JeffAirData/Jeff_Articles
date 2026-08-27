@@ -2,6 +2,9 @@
 title: "Plan mode e checkpoints: planejar antes e voltar atrás quando precisar"
 description: "Como usar o modo Plano e os checkpoints para planejar mudanças e reverter se necessário."
 slug: "/articles/claude-code-guia/02-intermediario/05-plan-mode-e-checkpoints"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 5. Plan mode e checkpoints: planejar antes e voltar atrás quando precisar

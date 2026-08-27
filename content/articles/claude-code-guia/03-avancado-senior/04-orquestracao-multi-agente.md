@@ -2,6 +2,9 @@
 title: "Orquestração multi-agente"
 description: "Padrões e práticas para coordenar múltiplos agentes em tarefas complexas."
 slug: "/articles/claude-code-guia/03-avancado-senior/04-orquestracao-multi-agente"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 4. Orquestração multi-agente

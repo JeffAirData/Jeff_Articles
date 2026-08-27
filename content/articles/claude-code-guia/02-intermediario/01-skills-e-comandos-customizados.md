@@ -2,6 +2,9 @@
 title: "Skills e comandos customizados"
 description: "Introdução a skills e comandos customizados no Claude Code."
 slug: "/articles/claude-code-guia/02-intermediario/01-skills-e-comandos-customizados"
+date: "2026-08-26"
+author: "Jefferson O. Melo"
+tags: []
 ---
 
 # 1. Skills e comandos customizados
