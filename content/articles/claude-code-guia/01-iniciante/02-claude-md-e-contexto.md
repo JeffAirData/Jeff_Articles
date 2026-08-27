@@ -1,4 +1,4 @@
-# ---
+---
 title: "CLAUDE.md: dando contexto persistente ao seu projeto"
 description: "Como escrever um CLAUDE.md para fornecer contexto persistente ao Claude Code."
 slug: "/articles/claude-code-guia/01-iniciante/02-claude-md-e-contexto"

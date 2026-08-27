@@ -1,4 +1,4 @@
-# ---
+---
 title: "Comandos slash essenciais e atalhos de teclado"
 description: "Lista de comandos e atalhos essenciais do Claude Code."
 slug: "/articles/claude-code-guia/01-iniciante/04-comandos-e-atalhos"

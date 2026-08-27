@@ -1,4 +1,4 @@
-# ---
+---
 title: "Permissões: como o Claude Code pede (ou não) sua aprovação"
 description: "Explicação dos modos de permissão do Claude Code e boas práticas."
 slug: "/articles/claude-code-guia/01-iniciante/03-permissoes-basicas"

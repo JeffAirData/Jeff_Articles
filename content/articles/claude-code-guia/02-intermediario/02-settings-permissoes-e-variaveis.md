@@ -1,4 +1,4 @@
-# ---
+---
 title: "settings.json: permissões persistentes e variáveis de ambiente"
 description: "Como configurar permissões e variáveis persistentes para o Claude Code."
 slug: "/articles/claude-code-guia/02-intermediario/02-settings-permissoes-e-variaveis"

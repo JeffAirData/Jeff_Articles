@@ -1,4 +1,4 @@
-# ---
+---
 title: "Claude Agent SDK: construindo seus próprios agentes"
 description: "Introdução ao Agent SDK para construir agentes programáticos com o motor do Claude."
 slug: "/articles/claude-code-guia/03-avancado-senior/02-agent-sdk"

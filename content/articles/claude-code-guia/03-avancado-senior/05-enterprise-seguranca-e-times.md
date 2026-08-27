@@ -1,4 +1,4 @@
-# ---
+---
 title: "Enterprise, segurança e configuração para times"
 description: "Padrões de segurança e configuração para uso corporativo do Claude Code."
 slug: "/articles/claude-code-guia/03-avancado-senior/05-enterprise-seguranca-e-times"

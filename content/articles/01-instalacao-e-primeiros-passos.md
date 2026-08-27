@@ -98,11 +98,11 @@ aprovação antes de escrever no disco ou rodar comandos.
 
 ## Próximos passos
 
-- [CLAUDE.md e contexto](../articles/02-claude-md-e-contexto.md) — como dar
+- [CLAUDE.md e contexto](./claude-code-guia/01-iniciante/02-claude-md-e-contexto.md) — como dar
   contexto persistente sobre seu projeto.
-- [Permissões básicas](../../claude-code-guia/01-iniciante/03-permissoes-basicas.md) — como aprovar
+- [Permissões básicas](./claude-code-guia/01-iniciante/03-permissoes-basicas.md) — como aprovar
   (ou não) as ações do Claude Code.
-- [Comandos e atalhos](../../claude-code-guia/01-iniciante/04-comandos-e-atalhos.md) — comandos
+- [Comandos e atalhos](./claude-code-guia/01-iniciante/04-comandos-e-atalhos.md) — comandos
   essenciais e atalhos de teclado.
 
 > 📚 Fonte oficial: [code.claude.com/docs](https://code.claude.com/docs) —

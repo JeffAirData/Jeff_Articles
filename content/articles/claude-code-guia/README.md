@@ -1,4 +1,4 @@
-# ---
+---
 title: "Compêndio Claude Code — do zero ao nível sênior"
 description: "Guia progressivo sobre o uso do Claude Code, organizado em níveis: iniciante, intermediário e sênior."
 slug: "/articles/claude-code-guia"

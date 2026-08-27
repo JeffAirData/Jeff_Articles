@@ -1,9 +1,9 @@
 # Liberdade, Mercado e Estado: Uma Leitura Comparada dos Fundamentos do Liberalismo Econômico a partir de Smith, Hayek e Friedman
-# ---
-# title: "Liberdade, Mercado e Estado"
-# description: "Reflexões sobre liberdade, mercado e papel do Estado."
-# slug: "/articles/liberdade-mercado-estado"
-# ---
+---
+title: "Liberdade, Mercado e Estado"
+description: "Reflexões sobre liberdade, mercado e papel do Estado."
+slug: "/articles/liberdade-mercado-estado"
+---
 
 ## RESUMO
 

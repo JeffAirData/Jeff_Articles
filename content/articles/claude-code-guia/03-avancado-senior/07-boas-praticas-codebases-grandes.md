@@ -1,4 +1,4 @@
-# ---
+---
 title: "Boas práticas para bases de código grandes"
 description: "Referência rápida com padrões úteis para bases de código grandes ao usar Claude Code."
 slug: "/articles/claude-code-guia/03-avancado-senior/07-boas-praticas-codebases-grandes"
