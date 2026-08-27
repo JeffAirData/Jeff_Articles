@@ -6,13 +6,13 @@ independente e autocontido.
 
 ## Projetos
 
-### 📘 [Compêndio Claude Code — do zero ao nível sênior](./claude-code-guia/)
+### 📘 [Compêndio Claude Code — do zero ao nível sênior](./content/index.md)
 Guia progressivo (iniciante → intermediário → sênior/avançado) sobre como
 usar a função de código do Claude (Claude Code) para programar com apoio de
 IA. Feito para quem está começando a programar e quer aprender a "codar"
 com o Claude Code de forma sólida.
 
-👉 Comece por [`claude-code-guia/README.md`](./claude-code-guia/README.md)
+👉 Comece por [`Capa / Índice`](./content/index.md)
 
 ## Como contribuir
 
