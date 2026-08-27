@@ -19,5 +19,5 @@
 | **Contexto (context window)** | Quantidade de informação (código, conversa, arquivos) que o modelo consegue "ver" de uma vez em uma sessão |
 
 > Encontrou um termo que faltou? Abra uma
-> [issue](../../../../issues) ou envie um PR — veja
+> [issue](https://github.com/JeffAirData/Jeff_Articles/issues) ou envie um PR — veja
 > [`CONTRIBUTING.md`](../../../../CONTRIBUTING.md).

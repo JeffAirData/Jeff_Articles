@@ -67,5 +67,5 @@ mudanças, ele aponta isso explicitamente e recomenda conferir a
 ## Contribuindo
 
 Encontrou algo desatualizado, incorreto ou quer sugerir uma nova dica?
-Veja o [`CONTRIBUTING.md`](../CONTRIBUTING.md) do repositório e abra uma
-[issue](../../../issues) ou um Pull Request.
+Veja o [`CONTRIBUTING.md`](../../../CONTRIBUTING.md) do repositório e abra uma
+[issue](https://github.com/JeffAirData/Jeff_Articles/issues) ou um Pull Request.

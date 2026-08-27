@@ -9,7 +9,7 @@ tags: []
 
 # 3. Subagentes: delegando tarefas para agentes especializados
 
-> Nível: Intermediário · Pré-requisito: [02-settings-permissoes-e-variaveis.md](./02-settings-permisos-e-variaveis.md)
+> Nível: Intermediário · Pré-requisito: [02-settings-permissoes-e-variaveis.md](./02-settings-permissoes-e-variaveis.md)
 
 ## O problema que subagentes resolvem
 

@@ -25,4 +25,4 @@ documentação oficial acima antes de aplicar em produção — o Claude Code
 evolui rapidamente e novos recursos são lançados com frequência.
 
 > Encontrou um link quebrado ou uma página que mudou de endereço? Abra uma
-> [issue](../../../../issues) usando o template "🐛 Erro / Correção".
+> [issue](https://github.com/JeffAirData/Jeff_Articles/issues) usando o template "🐛 Erro / Correção".
