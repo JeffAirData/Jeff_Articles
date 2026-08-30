@@ -1,0 +1,1364 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cadernos de Dados — Jefferson Melo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f1e7;
+    --paper-2: #efe7d6;
+    --ink: #2a2420;
+    --ink-soft: #55483c;
+    --ink-faint: #8a7a68;
+    --rule: #d8cbb0;
+    --accent: #8a3324;
+    --accent-2: #2f4d3a;
+    --amber: #b3812f;
+    --card: #fffaf0;
+    --shadow: rgba(42,36,32,0.12);
+    --sans: 'JetBrains Mono', ui-monospace, monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #16130f;
+      --paper-2: #1c1811;
+      --ink: #ece3d2;
+      --ink-soft: #cabfa8;
+      --ink-faint: #8d8168;
+      --rule: #3a3126;
+      --accent: #d97a5f;
+      --accent-2: #7fae8e;
+      --amber: #d8ab5e;
+      --card: #1e1a13;
+      --shadow: rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #16130f;
+    --paper-2: #1c1811;
+    --ink: #ece3d2;
+    --ink-soft: #cabfa8;
+    --ink-faint: #8d8168;
+    --rule: #3a3126;
+    --accent: #d97a5f;
+    --accent-2: #7fae8e;
+    --amber: #d8ab5e;
+    --card: #1e1a13;
+    --shadow: rgba(0,0,0,0.45);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  a { color: var(--accent); }
+
+  .masthead {
+    background: var(--paper-2);
+    border-bottom: 3px double var(--rule);
+    padding: 3rem 1.5rem 2rem;
+    text-align: center;
+  }
+  .masthead .kicker {
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    margin-bottom: 0.8rem;
+  }
+  .masthead h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.01em;
+  }
+  .masthead .subtitle {
+    font-style: italic;
+    font-family: var(--serif);
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    max-width: 640px;
+    margin: 0 auto 1rem;
+  }
+  .masthead .meta {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.05em;
+  }
+
+  .toc {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.9rem;
+    justify-content: center;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1.5rem;
+  }
+  .toc a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    background: var(--card);
+    transition: all 0.15s ease;
+  }
+  .toc a:hover {
+    color: var(--card);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .search-bar {
+    max-width: 780px;
+    margin: 1.5rem auto 0;
+    padding: 0 1.25rem;
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+  }
+  .search-box input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--ink);
+  }
+  .search-box input::placeholder { color: var(--ink-faint); }
+  .search-box .clear-btn {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+    display: none;
+  }
+  .search-box .clear-btn.visible { display: inline-block; }
+  .tag-chips {
+    margin-top: 0.7rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    max-height: 4.4em;
+    overflow-y: auto;
+  }
+  .tag-chip {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    cursor: pointer;
+  }
+  .tag-chip:hover, .tag-chip.active {
+    color: var(--card);
+    background: var(--amber);
+    border-color: var(--amber);
+  }
+  #result-count {
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    margin-top: 0.5rem;
+    display: none;
+  }
+  #no-results {
+    display: none;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--ink-faint);
+    font-style: italic;
+    font-family: var(--serif);
+  }
+
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem 4rem;
+  }
+
+  .category {
+    margin-top: 3.5rem;
+  }
+  .category-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.6rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.8rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .category-title .count {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--ink-faint);
+  }
+
+  .post {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.6rem 1.7rem;
+    margin-bottom: 1.6rem;
+    box-shadow: 0 1px 3px var(--shadow);
+    position: relative;
+  }
+  .post::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.9rem; bottom: 0.9rem;
+    width: 3px;
+    background: var(--amber);
+    border-radius: 2px;
+  }
+  .post-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.22rem;
+    line-height: 1.35;
+    margin: 0 0 0.9rem;
+    color: var(--ink);
+  }
+  .post p {
+    margin: 0 0 0.85rem;
+    color: var(--ink-soft);
+  }
+  .post p:last-child { margin-bottom: 0; }
+
+  .note {
+    display: inline-block;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    border: 1px solid var(--accent-2);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .lang-tabs {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  .lang-btn {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-faint);
+    padding: 0.25rem 0.7rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .lang-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .lang-panel { display: none; }
+  .lang-panel.active { display: block; }
+
+  .refs {
+    margin-top: 1.2rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--rule);
+  }
+  .refs-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .refs ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .refs li {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .refs a {
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent);
+  }
+  .refs a:hover { border-bottom-style: solid; }
+
+  .tags {
+    margin-top: 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tag {
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+  }
+
+  footer {
+    text-align: center;
+    padding: 2.5rem 1.5rem 3.5rem;
+    color: var(--ink-faint);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--rule);
+  }
+  footer a { color: var(--ink-soft); }
+
+  ::selection { background: var(--amber); color: var(--paper); }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="kicker">Arquivo pessoal &middot; LinkedIn &rarr; Papel</div>
+  <h1>Cadernos de Dados</h1>
+  <p class="subtitle">Ciência de dados, filosofia e vida pública — 71 publicações reunidas em ordem cronológica, por tema.</p>
+  <p class="meta">Jefferson Oliveira Melo &middot; Goiânia, Brasil</p>
+</header>
+
+<nav class="toc"><a href="#cat-carreira">Trajetória &amp; Carreira</a><a href="#cat-tecnico">Ciência de Dados &amp; Engenharia</a><a href="#cat-etica">IA, Ética &amp; Governança</a><a href="#cat-filosofia">Filosofia &amp; Ciências Sociais</a><a href="#cat-saude">Saúde Pública &amp; Transformação Digital</a><a href="#cat-cultura">Cultura, Cinema &amp; Vida Pessoal</a><a href="#cat-indigena">Série Especial: Povos Indígenas e Dados</a></nav>
+
+<div class="search-bar">
+  <div class="search-box">
+    <span aria-hidden="true">&#128269;</span>
+    <input id="tag-search" type="text" placeholder="Buscar por tag (ex: DataScience, Fiocruz, IA)..." oninput="onSearchInput()">
+    <button class="clear-btn" id="clear-btn" onclick="clearSearch()">limpar</button>
+  </div>
+  <div class="tag-chips"><button class="tag-chip" onclick="filterByTag('adamsmith')">#AdamSmith</button><button class="tag-chip" onclick="filterByTag('afraidmovie')">#AfraidMovie</button><button class="tag-chip" onclick="filterByTag('ai')">#ai</button><button class="tag-chip" onclick="filterByTag('ai')">#AI</button><button class="tag-chip" onclick="filterByTag('aiagent')">#AIAgent</button><button class="tag-chip" onclick="filterByTag('aiethics')">#AIEthics</button><button class="tag-chip" onclick="filterByTag('alexgorelik')">#AlexGorelik</button><button class="tag-chip" onclick="filterByTag('algoritmos')">#Algoritmos</button><button class="tag-chip" onclick="filterByTag('amazônia')">#Amazônia</button><button class="tag-chip" onclick="filterByTag('antropologia')">#Antropologia</button><button class="tag-chip" onclick="filterByTag('apachespark')">#ApacheSpark</button><button class="tag-chip" onclick="filterByTag('aprendizadodemáquina')">#AprendizadoDeMáquina</button><button class="tag-chip" onclick="filterByTag('arquiteturadedados')">#ArquiteturaDeDados</button><button class="tag-chip" onclick="filterByTag('artificialintelligence')">#ArtificialIntelligence</button><button class="tag-chip" onclick="filterByTag('asimov')">#Asimov</button><button class="tag-chip" onclick="filterByTag('autodidata')">#Autodidata</button><button class="tag-chip" onclick="filterByTag('b2p')">#B2P</button><button class="tag-chip" onclick="filterByTag('bigdata')">#BigData</button><button class="tag-chip" onclick="filterByTag('businessintelligence')">#BusinessIntelligence</button><button class="tag-chip" onclick="filterByTag('career')">#Career</button><button class="tag-chip" onclick="filterByTag('careertransition')">#CareerTransition</button><button class="tag-chip" onclick="filterByTag('careprinciples')">#CAREPrinciples</button><button class="tag-chip" onclick="filterByTag('carreira')">#Carreira</button><button class="tag-chip" onclick="filterByTag('cibersegurança')">#Cibersegurança</button><button class="tag-chip" onclick="filterByTag('cinema')">#Cinema</button><button class="tag-chip" onclick="filterByTag('ciênciadedados')">#CiênciaDeDados</button><button class="tag-chip" onclick="filterByTag('ciênciadedados')">#CiênciadeDados</button><button class="tag-chip" onclick="filterByTag('claude4u')">#Claude4U</button><button class="tag-chip" onclick="filterByTag('collectiveintelligence')">#CollectiveIntelligence</button><button class="tag-chip" onclick="filterByTag('complexidade')">#Complexidade</button><button class="tag-chip" onclick="filterByTag('compliance')">#Compliance</button><button class="tag-chip" onclick="filterByTag('computaçãoquântica')">#ComputaçãoQuântica</button><button class="tag-chip" onclick="filterByTag('conectividade')">#Conectividade</button><button class="tag-chip" onclick="filterByTag('conhecimento')">#Conhecimento</button><button class="tag-chip" onclick="filterByTag('copilot')">#Copilot</button><button class="tag-chip" onclick="filterByTag('cormen')">#Cormen</button><button class="tag-chip" onclick="filterByTag('cultura')">#Cultura</button><button class="tag-chip" onclick="filterByTag('cyberpunk')">#Cyberpunk</button><button class="tag-chip" onclick="filterByTag('cybersecurity')">#CyberSecurity</button><button class="tag-chip" onclick="filterByTag('dados')">#Dados</button><button class="tag-chip" onclick="filterByTag('dadosabertos')">#DadosAbertos</button><button class="tag-chip" onclick="filterByTag('dadoshistóricos')">#DadosHistóricos</button><button class="tag-chip" onclick="filterByTag('dadospúblicos')">#DadosPúblicos</button><button class="tag-chip" onclick="filterByTag('dataanalysis')">#DataAnalysis</button><button class="tag-chip" onclick="filterByTag('databricks')">#Databricks</button><button class="tag-chip" onclick="filterByTag('datadriven')">#DataDriven</button><button class="tag-chip" onclick="filterByTag('dataengineering')">#DataEngineering</button><button class="tag-chip" onclick="filterByTag('dataengineering')">#dataengineering</button><button class="tag-chip" onclick="filterByTag('dataethics')">#DataEthics</button><button class="tag-chip" onclick="filterByTag('datagovernance')">#DataGovernance</button><button class="tag-chip" onclick="filterByTag('datalake')">#DataLake</button><button class="tag-chip" onclick="filterByTag('datamesh')">#DataMesh</button><button class="tag-chip" onclick="filterByTag('datascience')">#DataScience</button><button class="tag-chip" onclick="filterByTag('datascience')">#datascience</button><button class="tag-chip" onclick="filterByTag('datascienceandai')">#DataScienceAndAI</button><button class="tag-chip" onclick="filterByTag('datasciencedozero')">#DataScienceDoZero</button><button class="tag-chip" onclick="filterByTag('datasovereignty')">#DataSovereignty</button><button class="tag-chip" onclick="filterByTag('deeplearning')">#deeplearning</button><button class="tag-chip" onclick="filterByTag('democracia')">#Democracia</button><button class="tag-chip" onclick="filterByTag('digitalhealth')">#DigitalHealth</button><button class="tag-chip" onclick="filterByTag('digitaltransformation')">#DigitalTransformation</button><button class="tag-chip" onclick="filterByTag('diversidade')">#Diversidade</button><button class="tag-chip" onclick="filterByTag('dpo')">#DPO</button><button class="tag-chip" onclick="filterByTag('dsmarket')">#DSMarket</button><button class="tag-chip" onclick="filterByTag('economiapolítica')">#economiapolítica</button><button class="tag-chip" onclick="filterByTag('einstein')">#Einstein</button><button class="tag-chip" onclick="filterByTag('estatística')">#Estatística</button><button class="tag-chip" onclick="filterByTag('feynman')">#Feynman</button><button class="tag-chip" onclick="filterByTag('ficçãocientífica')">#FicçãoCientífica</button><button class="tag-chip" onclick="filterByTag('filosofiadaciência')">#FilosofiaDaCiência</button><button class="tag-chip" onclick="filterByTag('filosofiapolitica')">#FilosofiaPolitica</button><button class="tag-chip" onclick="filterByTag('fiocruz')">#Fiocruz</button><button class="tag-chip" onclick="filterByTag('fiocruz')">#FioCruz</button><button class="tag-chip" onclick="filterByTag('fisica')">#Fisica</button><button class="tag-chip" onclick="filterByTag('friedman')">#Friedman</button><button class="tag-chip" onclick="filterByTag('futureofwork')">#FutureOfWork</button><button class="tag-chip" onclick="filterByTag('física')">#Física</button><button class="tag-chip" onclick="filterByTag('gamermindset')">#GamerMindset</button><button class="tag-chip" onclick="filterByTag('generativeai')">#GenerativeAI</button><button class="tag-chip" onclick="filterByTag('geoprocessamentosocial')">#GeoprocessamentoSocial</button><button class="tag-chip" onclick="filterByTag('gestãodepessoas')">#GestãoDePessoas</button><button class="tag-chip" onclick="filterByTag('gestãoemsaúde')">#GestãoEmSaúde</button><button class="tag-chip" onclick="filterByTag('gestãopública')">#GestãoPública</button><button class="tag-chip" onclick="filterByTag('githubcopilot')">#GitHubCopilot</button><button class="tag-chip" onclick="filterByTag('goffman')">#Goffman</button><button class="tag-chip" onclick="filterByTag('goiânia')">#Goiânia</button><button class="tag-chip" onclick="filterByTag('governança')">#Governança</button><button class="tag-chip" onclick="filterByTag('gradientedescendente')">#GradienteDescendente</button><button class="tag-chip" onclick="filterByTag('hadoop')">#Hadoop</button><button class="tag-chip" onclick="filterByTag('hannaharendt')">#HannahArendt</button><button class="tag-chip" onclick="filterByTag('havaí')">#Havaí</button><button class="tag-chip" onclick="filterByTag('hayek')">#Hayek</button><button class="tag-chip" onclick="filterByTag('healthtech')">#HealthTech</button><button class="tag-chip" onclick="filterByTag('homoludens')">#HomoLudens</button><button class="tag-chip" onclick="filterByTag('huizinga')">#Huizinga</button><button class="tag-chip" onclick="filterByTag('humanidades')">#Humanidades</button><button class="tag-chip" onclick="filterByTag('ia')">#IA</button><button class="tag-chip" onclick="filterByTag('inclusãodigital')">#InclusãoDigital</button><button class="tag-chip" onclick="filterByTag('innovation')">#Innovation</button><button class="tag-chip" onclick="filterByTag('inovaçãopública')">#InovaçãoPública</button><button class="tag-chip" onclick="filterByTag('inteligenciaartificial')">#InteligenciaArtificial</button><button class="tag-chip" onclick="filterByTag('inteligênciaartificial')">#InteligênciaArtificial</button><button class="tag-chip" onclick="filterByTag('isaacasimov')">#IsaacAsimov</button><button class="tag-chip" onclick="filterByTag('jeffersontv')">#JeffersonTV</button><button class="tag-chip" onclick="filterByTag('kant')">#Kant</button><button class="tag-chip" onclick="filterByTag('kdramas')">#KDramas</button><button class="tag-chip" onclick="filterByTag('knn')">#KNN</button><button class="tag-chip" onclick="filterByTag('leadership')">#Leadership</button><button class="tag-chip" onclick="filterByTag('leideinteligênciaartificial')">#LeideInteligênciaArtificial</button><button class="tag-chip" onclick="filterByTag('lgpd')">#LGPD</button><button class="tag-chip" onclick="filterByTag('liberalismo')">#liberalismo</button><button class="tag-chip" onclick="filterByTag('liberdade')">#Liberdade</button><button class="tag-chip" onclick="filterByTag('liderança')">#Liderança</button><button class="tag-chip" onclick="filterByTag('lifelonglearning')">#LifelongLearning</button><button class="tag-chip" onclick="filterByTag('linguagemr')">#LinguagemR</button><button class="tag-chip" onclick="filterByTag('linkedin')">#LinkedIn</button><button class="tag-chip" onclick="filterByTag('llm')">#LLM</button><button class="tag-chip" onclick="filterByTag('localcontexts')">#LocalContexts</button><button class="tag-chip" onclick="filterByTag('machinelearning')">#MachineLearning</button><button class="tag-chip" onclick="filterByTag('mana')">#Mana</button><button class="tag-chip" onclick="filterByTag('marinhadobrasil')">#MarinhaDoBrasil</button><button class="tag-chip" onclick="filterByTag('mckinsey')">#McKinsey</button><button class="tag-chip" onclick="filterByTag('mentalhealth')">#MentalHealth</button><button class="tag-chip" onclick="filterByTag('mikewest')">#MikeWest</button><button class="tag-chip" onclick="filterByTag('minhafilasaúde')">#MinhaFilaSaúde</button><button class="tag-chip" onclick="filterByTag('ml')">#ML</button><button class="tag-chip" onclick="filterByTag('mlops')">#MLOps</button><button class="tag-chip" onclick="filterByTag('monografia')">#Monografia</button><button class="tag-chip" onclick="filterByTag('mudançasclimáticas')">#MudançasClimáticas</button><button class="tag-chip" onclick="filterByTag('nlp')">#NLP</button><button class="tag-chip" onclick="filterByTag('nuclio')">#Nuclio</button><button class="tag-chip" onclick="filterByTag('opentowork')">#OpenToWork</button><button class="tag-chip" onclick="filterByTag('paternidade')">#Paternidade</button><button class="tag-chip" onclick="filterByTag('pensamentocrítico')">#pensamentocrítico</button><button class="tag-chip" onclick="filterByTag('peopleanalytics')">#PeopleAnalytics</button><button class="tag-chip" onclick="filterByTag('personalbranding')">#PersonalBranding</button><button class="tag-chip" onclick="filterByTag('philosophy')">#Philosophy</button><button class="tag-chip" onclick="filterByTag('pierrelévy')">#PierreLévy</button><button class="tag-chip" onclick="filterByTag('povosoriginários')">#PovosOriginários</button><button class="tag-chip" onclick="filterByTag('powerbi')">#PowerBI</button><button class="tag-chip" onclick="filterByTag('primevideo')">#PrimeVideo</button><button class="tag-chip" onclick="filterByTag('produtividade')">#Produtividade</button><button class="tag-chip" onclick="filterByTag('projeto')">#Projeto</button><button class="tag-chip" onclick="filterByTag('promptengineering')">#PromptEngineering</button><button class="tag-chip" onclick="filterByTag('proteçãodedados')">#ProteçãoDeDados</button><button class="tag-chip" onclick="filterByTag('publichealth')">#PublicHealth</button><button class="tag-chip" onclick="filterByTag('python')">#Python</button><button class="tag-chip" onclick="filterByTag('pósgraduação')">#PósGraduação</button><button class="tag-chip" onclick="filterByTag('quantummindset')">#QuantumMindset</button><button class="tag-chip" onclick="filterByTag('quantumphysics')">#QuantumPhysics</button><button class="tag-chip" onclick="filterByTag('r')">#R</button><button class="tag-chip" onclick="filterByTag('rag')">#RAG</button><button class="tag-chip" onclick="filterByTag('reflexão')">#Reflexão</button><button class="tag-chip" onclick="filterByTag('resilience')">#Resilience</button><button class="tag-chip" onclick="filterByTag('retrospectiva')">#Retrospectiva</button><button class="tag-chip" onclick="filterByTag('rickandmorty')">#RickAndMorty</button><button class="tag-chip" onclick="filterByTag('rotina')">#Rotina</button><button class="tag-chip" onclick="filterByTag('rstats')">#RStats</button><button class="tag-chip" onclick="filterByTag('saudepublica')">#SaudePublica</button><button class="tag-chip" onclick="filterByTag('saúdeambiental')">#SaúdeAmbiental</button><button class="tag-chip" onclick="filterByTag('saúdedigital')">#SaúdeDigital</button><button class="tag-chip" onclick="filterByTag('saúdepública')">#SaúdePública</button><button class="tag-chip" onclick="filterByTag('sciencefiction')">#ScienceFiction</button><button class="tag-chip" onclick="filterByTag('setorpúblico')">#SetorPúblico</button><button class="tag-chip" onclick="filterByTag('silksong')">#Silksong</button><button class="tag-chip" onclick="filterByTag('sisreg')">#SISREG</button><button class="tag-chip" onclick="filterByTag('snowflake')">#Snowflake</button><button class="tag-chip" onclick="filterByTag('soberaniadedados')">#SoberaniaDeDados</button><button class="tag-chip" onclick="filterByTag('sociologia')">#Sociologia</button><button class="tag-chip" onclick="filterByTag('sociology')">#Sociology</button><button class="tag-chip" onclick="filterByTag('softskills')">#SoftSkills</button><button class="tag-chip" onclick="filterByTag('spark')">#Spark</button><button class="tag-chip" onclick="filterByTag('sql')">#SQL</button><button class="tag-chip" onclick="filterByTag('ssi')">#SSI</button><button class="tag-chip" onclick="filterByTag('stanford')">#Stanford</button><button class="tag-chip" onclick="filterByTag('sus')">#SUS</button><button class="tag-chip" onclick="filterByTag('systemsthinking')">#SystemsThinking</button><button class="tag-chip" onclick="filterByTag('sériestemporais')">#SériesTemporais</button><button class="tag-chip" onclick="filterByTag('tecnologiacompropósito')">#TecnologiaComPropósito</button><button class="tag-chip" onclick="filterByTag('tecnologiasocial')">#TecnologiaSocial</button><button class="tag-chip" onclick="filterByTag('territórioindígena')">#TerritórioIndígena</button><button class="tag-chip" onclick="filterByTag('theghostintheshell')">#TheGhostInTheShell</button><button class="tag-chip" onclick="filterByTag('thomasjefferson')">#ThomasJefferson</button><button class="tag-chip" onclick="filterByTag('tocqueville')">#Tocqueville</button><button class="tag-chip" onclick="filterByTag('totalitarismo')">#Totalitarismo</button><button class="tag-chip" onclick="filterByTag('transformacaodigital')">#TransformacaoDigital</button><button class="tag-chip" onclick="filterByTag('transformaçãodigital')">#TransformaçãoDigital</button><button class="tag-chip" onclick="filterByTag('transformaçãodigitalemsaúde')">#TransformaçãoDigitalemSaúde</button><button class="tag-chip" onclick="filterByTag('ufg')">#UFG</button><button class="tag-chip" onclick="filterByTag('umbertoeco')">#UmbertoEco</button><button class="tag-chip" onclick="filterByTag('unb')">#UnB</button><button class="tag-chip" onclick="filterByTag('uniãoeuropéia')">#UniãoEuropéia</button><button class="tag-chip" onclick="filterByTag('vectordatabases')">#VectorDatabases</button><button class="tag-chip" onclick="filterByTag('vibecoding')">#VibeCoding</button><button class="tag-chip" onclick="filterByTag('vscode')">#VSCode</button><button class="tag-chip" onclick="filterByTag('wellbeing')">#Wellbeing</button><button class="tag-chip" onclick="filterByTag('youryearwithchatgpt')">#YourYearWithChatGPT</button><button class="tag-chip" onclick="filterByTag('éticadigital')">#ÉticaDigital</button></div>
+  <div id="result-count"></div>
+</div>
+
+<main id="main-content">
+
+    <section class="category" id="cat-carreira">
+      <h2 class="category-title">Trajetória &amp; Carreira <span class="count">(10)</span></h2>
+      <div class="posts">
+      <article class="post" id="c01" data-tags="opentowork datascience python r sql inteligenciaartificial transformacaodigital goiânia">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Em busca de novos desafios em Data Science!</h3><p>Olá, pessoal! Passei por um momento de transição de carreira e agora estou aberto a novas oportunidades nas áreas de Ciência de Dados, Análise de Dados, Sistemas e Educação. Se você souber de vagas ou quiser trocar ideias, será um prazer conversar!</p>
+<p>📍 Localização: Goiânia – disponível para atuar presencialmente ou remotamente.</p>
+<p>🎯 Objetivo: Contribuir com projetos que envolvam análise de dados, inteligência artificial, transformação digital e inovação no setor público ou privado.</p>
+<p>👨‍💻 Sobre mim: Sou pós-graduado em Data Science pela Nuclio Digital School (Barcelona - Espanha) e atualmente curso especialização em Transformação Digital em Saúde pela Fiocruz de Brasília, ambas remotamente. Atuei estrategicamente na Secretaria de Saúde do DF, desenvolvendo APIs e mantendo mais de 400 dashboards de BI, com foco em indicadores críticos como, por exemplo, leitos de UTI&#x27;s. Na Controladoria-Geral do DF, trabalhei com Machine Learning e NLP (Processamento de Linguagem Natural), aplicando IA para melhorar o serviço de ouvidoria do Distrito Federal aperfeiçoando o chatbot IZA.</p>
+<p>📊 Atuação atual na Secretaria Municipal de Educação de Goiânia (SME): Atualmente, trabalho no setor de rede física da SME, onde desempenho um papel essencial na estruturação e qualificação de bases de dados físicas. Minha rotina envolve: aquisição e limpeza de dados brutos provenientes de diversas fontes administrativas e operacionais; tratamento e padronização de informações para garantir consistência e confiabilidade nos processos de gestão; organização estratégica dos dados da rede física, com foco em otimizar decisões e aprimorar a infraestrutura educacional; utilização do SEI (Sistema Eletrônico de Informações) para integrar dados e agilizar processos.</p>
+<p>🤝 Trabalho em um ambiente de gestão coparticipativa, onde a inovação é bem-vinda e cada colaborador é visto como parte fundamental da engrenagem institucional. Essa experiência tem sido valiosa para aplicar conceitos de Data Science na prática, especialmente em tarefas como ETL, modelagem de dados, e preparação de datasets para análises futuras.</p>
+<p>📫 Vamos conversar? Comentários e mensagens são bem-vindos.</p></div>
+        
+        <div class="tags"><span class="tag">#OpenToWork</span><span class="tag">#DataScience</span><span class="tag">#Python</span><span class="tag">#R</span><span class="tag">#SQL</span><span class="tag">#InteligenciaArtificial</span><span class="tag">#TransformacaoDigital</span><span class="tag">#Goiânia</span></div>
+      </article>
+
+      <article class="post" id="c02" data-tags="careertransition dataengineering nlp publichealth">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Da Administração Pública à Inteligência de Dados: Uma Transição de Carreira</h3><p>Após uma década na administração pública, identifiquei uma lacuna crítica: a dificuldade das instituições em transformar volumes massivos de dados em inteligência estratégica. Isso me levou à transição para Ciência de Dados e IA, com foco em saúde e eficiência no setor público.</p>
+<p>Principais Conquistas — Automação: Mantive, junto à nossa equipe SESDF/FIOCRUZ, mais de 400 dashboards de saúde pública usando Python, SQL e BI, substituindo fluxos manuais por infraestrutura automatizada.</p>
+<p>Implementação de NLP: Mantive modelos de Processamento de Linguagem Natural para automatizar a triagem de milhares de solicitações de cidadãos, reduzindo o ruído operacional.</p>
+<p>Minha Visão: IA trata-se de construir sistemas para melhores decisões baseadas em evidências. Hoje, atuo na interseção entre IA, Engenharia de Dados e Análise de Saúde Pública, dedicado a transformar dados brutos em governança e transparência.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">From Public Administration to Data Intelligence: A Career Transition</h3><p>After a decade in public administration, I identified a critical gap: the struggle of institutions to transform massive amounts of data into actionable intelligence. This led me to transition into Data Science and AI, focusing on healthcare and public sector efficiency.</p>
+<p>Key Achievements — Automation: I maintained, together with my team at SESDF/FIOCRUZ, over 400 public health dashboards using Python, SQL, and BI, replacing manual workflows with automated infrastructure.</p>
+<p>NLP Implementation: I maintained Natural Language Processing models to automate the triage of thousands of citizen requests, reducing operational noise.</p>
+<p>My Vision: AI is about building systems for better evidence-based decision-making. Today, I work at the intersection of AI, Data Engineering, and Public Health Analytics, dedicated to turning raw data into governance and transparency.</p></div>
+        
+        <div class="tags"><span class="tag">#CareerTransition</span><span class="tag">#DataEngineering</span><span class="tag">#NLP</span><span class="tag">#PublicHealth</span></div>
+      </article>
+
+      <article class="post" id="c03" data-tags="ssi fiocruz transformaçãodigitalemsaúde datascience monografia">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">“Na corrida pelo SSI”</h3><p>Hoje eu quero falar de um tema que parece simples, mas na prática é quase uma maratona: o tal do SSI do LinkedIn. Aquele índice que mede sua relevância na rede social. Eu estava todo feliz quando finalmente vi meu número chegar a 36. Daí eu descobri que o ideal é ficar acima de 60 e, de quebra, ter pelo menos 1500 conexões relevantes.</p>
+<p>Crescer o SSI é quase como ter um carro antigo com motor potente. Faz barulho, chama atenção, mas exige manutenção constante.</p>
+<p>O jogo aqui não é parecer um número inflado, e sim construir relevância de verdade. Honestidade, consistência e relevância: esse é o combustível.</p>
+<p>Falando em combustível, essa semana minha rede ferveu com interações porque lancei uma nova empresa. Ainda não dá lucro, mas também não dá prejuízo — estamos na fase de captar recursos. O nome? “Uma hora eu te conto” pra não esbarrar em direitos autorais sendo ainda tão jovem, esse meu bebê. Mas posso adiantar que a empresa tem foco em saúde digital no Brasil. A ideia nasceu das conversas durante o curso de pós-graduação em transformação digital em saúde da Fiocruz Brasília.</p>
+<p>E como todo curso, vai me dar um filho: a monografia, que já está sendo preparada. Porque no fim das contas, o SSI é só um reflexo do que a gente constrói: conexões reais, projetos relevantes e uma narrativa sincera.</p>
+<p>Bora seguir nessa corrida pelo dindin, mas com motor potente, boas risadas e, acima de tudo, mantendo a transcendência.</p></div>
+        
+        <div class="tags"><span class="tag">#SSI</span><span class="tag">#FioCruz</span><span class="tag">#TransformaçãoDigitalemSaúde</span><span class="tag">#DataScience</span><span class="tag">#Monografia</span></div>
+      </article>
+
+      <article class="post" id="c04" data-tags="mlops copilot vscode">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Desenvolvendo competências de MLOps</h3><p>Se alguém tiver interesse em desenvolver competências de MLOps, aqui vai uma dica, com base na minha experiência.</p>
+<p>O projeto de MLOps fez parte do projeto final do meu curso de Master em Data Science pela Nuclio Digital School da Espanha. Lembro que na época foi muito difícil estudar e buscar referências — era pré-ChatGPT — e foi tanto que só consegui terminar o projeto na noite passada.</p>
+<p>A dica é: aproveitem o que os seniors têm de bagagem e busquem seu conhecimento. Outra dica bem legal, na era pós IAs Generativas, é usar o Copilot associado a uma IDE. Fica bem mais fácil programar quando você tem essa dificuldade. Eu utilizo a versão paga do Copilot pra VSCode.</p></div>
+        
+        <div class="tags"><span class="tag">#MLOps</span><span class="tag">#Copilot</span><span class="tag">#VSCode</span></div>
+      </article>
+
+      <article class="post" id="c05" data-tags="mlops nuclio dsmarket">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">DS-Market (A Fórmula do MLOps)</h3><p>Tenho o prazer de compartilhar o projeto DS-Market (A Fórmula do MLOps), no qual trabalhei com os amigos Alisson Pereira Anjos, João Rego e Rubens Sant&#x27;Anna Junior, Ph.D. como projeto de conclusão do curso Master em Data Science da Nuclio Digital School da Espanha, no final de 2022.</p>
+<p>Foi pedreira — não existia o ChatGPT e acreditem, programávamos de cabeça! O máximo que tinha era um StackOverflow, uma biblioteca do Pandas e olhe lá.</p>
+<p>Resolvi retomar estes cadernos pra entender melhor o MLOps e como ele funciona, suas nuances. Afinal, conhecimento nunca é demais!</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://lnkd.in/dZ8FTqSX" target="_blank" rel="noopener">Ver detalhes do projeto DS-Market</a></li></ul></div>
+        <div class="tags"><span class="tag">#MLOps</span><span class="tag">#Nuclio</span><span class="tag">#DSMarket</span></div>
+      </article>
+
+      <article class="post" id="c06" data-tags="career goffman huizinga softskills">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Do “Círculo Mágico” à “Máscara Social”: o segredo para conquistar sua primeira vaga</h3><p>Entrar no mercado de trabalho pode parecer um desafio intimidador, mas se você entender a sociologia por trás do jogo, a entrevista deixa de ser um tribunal e vira uma oportunidade.</p>
+<p>Johan Huizinga nos ensinou em “Homo Ludens” que o jogo acontece dentro de um “Círculo Mágico”: um espaço com regras próprias, onde criatividade e estratégia se encontram. Ao entrar em uma entrevista, você está entrando em um “Círculo Mágico Profissional”. Aceite as regras, respeite o campo de jogo e jogue com excelência.</p>
+<p>Erving Goffman, em “A Representação do Eu na Vida Cotidiana”, argumenta que a vida é uma performance. Usamos “máscaras” para gerenciar as impressões que causamos: na entrevista (Front Stage), nas redes sociais, e no próprio emprego.</p>
+<p>A chave para o sucesso está no que Goffman chamou de “Frame Analysis”: a capacidade de entender em que contexto você está inserido. Uma startup tem um “quadro” diferente de um escritório jurídico tradicional.</p>
+<p>Não tenha medo da performance. Aprenda a jogar o jogo, saiba qual máscara usar em cada frame e, acima de tudo, divirta-se durante o processo.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">From the “Magic Circle” to the “Social Mask”: Unlocking Your First Career Milestone</h3><p>Entering the tech job market can be intimidating. However, by applying the sociology behind the concept of “play”, an interview ceases to be a trial and becomes a strategic opportunity.</p>
+<p>In “Homo Ludens”, Johan Huizinga explains that play occurs within a “Magic Circle” — a bounded space with its own rules, where creativity and strategy intersect. When you enter a job interview, you are stepping into a “Professional Magic Circle”.</p>
+<p>As Erving Goffman argued in “The Presentation of Self in Everyday Life”, human interaction is a performance. We use “masks” to manage the impressions we convey: the interview (front stage), social media, and the job itself.</p>
+<p>Success depends on “Frame Analysis”: the ability to decode the context you operate in. A fast-paced startup requires a different frame than a traditional enterprise.</p>
+<p>Do not fear the performance. Learn to navigate the system, understand which mask to adopt in each frame, and remain engaged in the process.</p></div>
+        
+        <div class="tags"><span class="tag">#Career</span><span class="tag">#Goffman</span><span class="tag">#Huizinga</span><span class="tag">#SoftSkills</span></div>
+      </article>
+
+      <article class="post" id="c06b" data-tags="dados ia datascience inteligênciaartificial">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O xeque-mate da IA não é o fim do jogo, é o início de uma nova estratégia</h3><p>Lendo o texto do meu amigo André Moraes, me senti tentado a escrever uma resposta. Da coleta à agricultura, da Revolução Industrial à Era da Informação, a busca humana por novas oportunidades sempre seguiu um padrão de evolução — mas ela não acontece de forma uniforme. Ainda hoje existem ilhas de “mentalismo feudal” em processos corporativos.</p>
+<p>Muitos buscam refúgio em ocupações que resistem à automação pela destreza física. Na construção civil, ofícios como o de pedreiro carecem de renovação — é irônico: a busca pelo status “digital” nos cega para mercados onde a demanda humana é soberana.</p>
+<p>É exatamente aí que a IA entra como a peça mais poderosa do tabuleiro: a Rainha. Mas há três detalhes que muitos preferem ignorar:</p>
+<p>A Rainha não joga sozinha: ela serve a uma estratégia maior. O erro do profissional moderno é tentar competir com a máquina em velocidade de deslocamento.</p>
+<p>Poder não é propósito: a IA tem a força, mas não a intenção. Estamos saindo da era do “fazer” (coleta e processamento) para a era do “curar” (julgamento e decisão).</p>
+<p>O risco é o descompasso evolutivo: o emprego não é “roubado” pela máquina, é absorvido pela eficiência. A frase do André Moraes me marcou: “A IA não precisa ser genial para substituir uma função; ela só precisa ser boa o suficiente para ser mais barata.”</p>
+<p>O tabuleiro cresceu. As regras mudaram. Você está jogando como um arquiteto da nova era ou ainda protegendo um “feudo” de planilhas manuais?</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://lnkd.in/dyGJSFhZ" target="_blank" rel="noopener">Texto original que inspirou este post</a></li></ul></div>
+        <div class="tags"><span class="tag">#Dados</span><span class="tag">#IA</span><span class="tag">#DataScience</span><span class="tag">#InteligênciaArtificial</span></div>
+      </article>
+
+      <article class="post" id="c07" data-tags="ciênciadedados setorpúblico saúdedigital gestãopública">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Ser cientista de dados no setor público é diferente. E isso importa!</h3><p>No setor privado, o sucesso de um modelo é medido em conversão, receita, retenção. No setor público, a métrica é outra: impacto na vida de pessoas que muitas vezes não têm alternativa. Um modelo que melhora a triagem de filas no SUS não aumenta o lucro de ninguém — mas pode significar um diagnóstico feito a tempo.</p>
+<p>Trabalhamos com dados fragmentados, sistemas legados, processos que precedem a era digital. A interoperabilidade que no privado é um problema técnico, no público é um problema político, institucional e histórico. E ainda assim, é aqui que os dados têm o maior potencial de transformação social.</p>
+<p>Minha opinião: o cientista de dados que escolhe o setor público precisa desenvolver uma habilidade que os cursos raramente ensinam — saber comunicar valor para quem não fala a língua dos dados, mas é quem decide. Técnica sem tradução não vira política. E dado sem decisão não vira mudança.</p></div>
+        
+        <div class="tags"><span class="tag">#CiênciaDeDados</span><span class="tag">#SetorPúblico</span><span class="tag">#SaúdeDigital</span><span class="tag">#GestãoPública</span></div>
+      </article>
+
+      <article class="post" id="c08" data-tags="retrospectiva linkedin">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Do planejamento perfeito ao script rodando no gargalo</h3><p>Se no início do ano meu planejamento parecia um código limpo, sem bugs e com arquitetura perfeita... a realidade foi um verdadeiro script rodando no gargalo!</p>
+<p>Entre rotinas intensas de dados, dashboards, aprendizados e aquela famosa maratona para entregar tudo dentro do prazo, publicar por aqui virou uma jornada à parte: 20% do tempo escrevendo a ideia e ajustando a lógica; 80% do tempo caçando o título perfeito (e torcendo para a revisão não deixar passar nada).</p>
+<p>Cada post publicado ao longo desses meses foi uma pequena vitória sobre o algoritmo e sobre o relógio. Mas, no fim das contas, a melhor parte dessa caminhada foi trocar ideias, compartilhar experiências de mercado e conectar com cada um de vocês.</p></div>
+        
+        <div class="tags"><span class="tag">#Retrospectiva</span><span class="tag">#LinkedIn</span></div>
+      </article>
+
+      <article class="post" id="c09" data-tags="rotina pósgraduação bigdata nlp">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Quem tem limite é município, a minha rotina não!</h3><p>Se alguém me dissesse no início do ano a quantidade de tarefas que eu colocaria na minha fila de execução, eu provavelmente diria que o script daria overflow. Mas cá estamos!</p>
+<p>Além da honrosa missão no serviço público, de ser pai, esposo e filho (os papéis mais importantes dessa pipeline toda!), decidi que o tempo vago precisava de mais dados. Além da Especialização em Transformação Digital na Saúde na Fiocruz, ingressei em mais duas pós-graduações: Análise de Dados na Xperiun e Atualização em Data Science na UNIPDS.</p>
+<p>Nos últimos meses o motor não parou: maratona concluída em Big Data &amp; Inteligência Cognitiva; modelos de NLP implementados para atendimento ao cidadão; e firme no foco para as grandes oportunidades em Data Science.</p>
+<p>Dizem que o segredo do equilíbrio é o café, mas desconfio que é pura teimosia de quem ama transformar dados e processos em impacto real.</p></div>
+        
+        <div class="tags"><span class="tag">#Rotina</span><span class="tag">#PósGraduação</span><span class="tag">#BigData</span><span class="tag">#NLP</span></div>
+      </article></div>
+    </section>
+
+    <section class="category" id="cat-tecnico">
+      <h2 class="category-title">Ciência de Dados &amp; Engenharia <span class="count">(17)</span></h2>
+      <div class="posts">
+      <article class="post" id="t01" data-tags="artificialintelligence dataanalysis githubcopilot businessintelligence">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">4 IAs que estão transformando a análise de dados em 2026 — e para qual perfil cada uma serve</h3><p>O diretor global de TI da Braskem, Alessandro Tomazela, mapeou as ferramentas de IA mais relevantes para quem trabalha com dados. Como Analista de Dados, achei o levantamento muito preciso — e ainda acrescentaria uma quinta opção que uso no meu dia a dia.</p>
+<p>🔵 Microsoft Copilot — Ideal para o ambiente corporativo, integra nativamente Power BI, Excel, SharePoint e SQL.</p>
+<p>🟡 ChatGPT &amp; Google Gemini — Destaques em versatilidade e geração de código.</p>
+<p>🟠 Claude (Anthropic) — O mais indicado para análise profunda de documentos.</p>
+<p>⚫ GitHub Copilot (minha adição) — Integrado à sua IDE favorita, acelera muito a criação de código.</p>
+<p>⚠️ Mas atenção: a IA não é mágica. Tomazela alerta que dados inconsistentes, falta de governança e ambientes fragmentados são os maiores inimigos de uma boa análise com IA. A IA não substitui a engenharia de dados.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">5 AI Tools Transforming Data Analysis in 2026 — and Which Profile Each One Fits</h3><p>Alessandro Tomazela, Global IT Director at Braskem, recently mapped the most relevant AI tools for data professionals. As a Data Analyst, I found the breakdown spot-on — and I&#x27;d like to add one more tool that&#x27;s been a game-changer in my daily workflow.</p>
+<p>🔵 Microsoft Copilot — Best for the corporate environment. Natively integrated with Power BI, Excel, SharePoint, and SQL.</p>
+<p>🟡 ChatGPT &amp; Google Gemini — Stand out for versatility and code generation. Ideal for rapid prototyping, Python scripts, and analysis pipelines.</p>
+<p>🟠 Claude (Anthropic) — The top pick for deep document analysis, recommended for researchers, legal/compliance teams, and managers.</p>
+<p>⚫ GitHub Copilot (my addition) — Integrated directly into your IDE, it significantly speeds up coding.</p>
+<p>⚠️ But keep in mind: AI is not magic. Tomazela warns that inconsistent data, lack of governance, and fragmented environments are the biggest enemies of good AI-driven analysis. AI does not replace data engineering — teams still need to ask the right questions, validate outputs, and keep humans in the loop.</p></div>
+        
+        <div class="tags"><span class="tag">#ArtificialIntelligence</span><span class="tag">#DataAnalysis</span><span class="tag">#GitHubCopilot</span><span class="tag">#BusinessIntelligence</span></div>
+      </article>
+
+      <article class="post" id="t02" data-tags="peopleanalytics mikewest gestãodepessoas">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Acabou a era do “eu acho” nos Recursos Humanos!</h3><p>Se ainda toma decisões sobre pessoas baseando-se apenas no instinto, o livro de Mike West — pioneiro que ajudou a fundar as equipas de People Analytics na Merck e no Google — é um despertar obrigatório.</p>
+<p>Em “People Analytics para Leigos”, West desmistifica a ideia de que a análise de dados é algo exclusivo para “gênios da matemática” e mostra como transformar o RH num motor estratégico de resultados.</p>
+<p>1. A Interseção de Ouro: People Analytics é a interseção entre Estratégia de Pessoas, Ciência, Estatística e Sistemas de tecnologia.</p>
+<p>2. Foco no “Business Case”: as soluções não têm valor por si só; o valor deriva dos problemas de negócio que resolvem.</p>
+<p>3. Um Esporte em Equipe: é um esforço coletivo que exige curiosidade para definir as perguntas certas e interpretar os resultados.</p>
+<p>O risco maior não é errar na análise, é nem sequer começar.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=People%20Analytics%20For%20Dummies%20Mike%20West" target="_blank" rel="noopener">People Analytics para Leigos — Mike West</a></li></ul></div>
+        <div class="tags"><span class="tag">#PeopleAnalytics</span><span class="tag">#MikeWest</span><span class="tag">#GestãoDePessoas</span></div>
+      </article>
+
+      <article class="post" id="t03" data-tags="bigdata datalake datagovernance alexgorelik">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O seu Data Lake é um resort ou o pântano do Shrek?</h3><p>Todo mundo da TI adora falar que a empresa agora é “Data Driven” e que o “Enterprise Data Lake” é o futuro. Mas, entre o que diz o manual e a realidade, tem muito analista patinando em gelo fino!</p>
+<p>Baseado no livro de Alex Gorelik, três razões pelas quais ainda fazemos “quack” na hora de entregar os dados:</p>
+<p>1) O Pântano de Dados: o plano era um lago cristalino, mas jogamos os dados lá dentro sem catálogo nenhum — o analista vira um arqueólogo procurando um CSV perdido no lodo.</p>
+<p>2) “Schema on Read” não é bagunça (mas parece): se você não governar o caos, cada analista lê o dado de um jeito.</p>
+<p>3) TI “Lojista” vs. TI “Carcereiro”: a TI deve parar de ser o guarda que diz “não” e virar o dono da loja que facilita o autoatendimento.</p>
+<p>Se o seu Data Lake não tem governança, catálogo e zonas bem definidas (Raw, Gold, Sandbox), você não tem uma estratégia de Big Data — você só tem um HD externo muito caro e cheio de lixo.</p></div>
+        
+        <div class="tags"><span class="tag">#BigData</span><span class="tag">#DataLake</span><span class="tag">#DataGovernance</span><span class="tag">#AlexGorelik</span></div>
+      </article>
+
+      <article class="post" id="t04" data-tags="generativeai nlp llm snowflake">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Do NLP às Big Techs da IA Generativa: O que mudou?</h3><p>Revisitei os fundamentos da nossa área através do livro “Generative AI and LLMs For Dummies” (Snowflake Edition), e vindo de uma trajetória em NLP e IA, é fascinante ver como a nossa caixa de ferramentas evoluiu.</p>
+<p>🧩 NLP: nossa base — stemming, lemmatization, análise de sentimentos. O foco era entender e classificar a estrutura da linguagem.</p>
+<p>🎃 LLMs: NLP em escala massiva — saímos das RNNs/LSTMs para Transformers. O modelo não apenas &#x27;entende&#x27;, ele &#x27;prevê&#x27; o contexto global.</p>
+<p>😎 IA Generativa: o resultado prático — usar essa base para criar conteúdo novo (texto, código, imagem).</p>
+<p>O insight de quem já está na área: IA sem dados de qualidade é apenas um brinquedo caro. O grande salto agora é conectar LLMs aos dados privados das empresas (via RAG ou Fine-tuning) com segurança e governança.</p></div>
+        
+        <div class="tags"><span class="tag">#GenerativeAI</span><span class="tag">#NLP</span><span class="tag">#LLM</span><span class="tag">#Snowflake</span></div>
+      </article>
+
+      <article class="post" id="t05" data-tags="datasciencedozero ml python gradientedescendente knn">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Data Science do Zero, de Joel Grus</h3><p>O livro é focado em ensinar os fundamentos da ciência de dados através da implementação manual de algoritmos em Python, sem depender apenas de bibliotecas prontas.</p>
+<p>1. A Filosofia “Do Zero”: usar bibliotecas sem entender o que fazem internamente impede que você realmente aprenda.</p>
+<p>2. Os Pilares do Cientista de Dados: Habilidades de Hacker, Matemática e Estatística, e Competência Significativa (domínio do negócio).</p>
+<p>3. Álgebra Linear e Estatística são a base de quase todas as técnicas de data science.</p>
+<p>4. Visualização e Exploração de Dados sempre antes de qualquer modelo.</p>
+<p>5. Gradiente Descendente: técnica de otimização central para minimizar erro.</p>
+<p>6. Overfitting, Underfitting e a Maldição da Dimensionalidade.</p>
+<p>7. Aplicações práticas em NLP e Redes Neurais (perceptrons e backpropagation).</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=Data%20Science%20do%20Zero%20Joel%20Grus" target="_blank" rel="noopener">Data Science do Zero — Joel Grus</a></li></ul></div>
+        <div class="tags"><span class="tag">#DataScienceDoZero</span><span class="tag">#ML</span><span class="tag">#Python</span><span class="tag">#GradienteDescendente</span><span class="tag">#KNN</span></div>
+      </article>
+
+      <article class="post" id="t06" data-tags="vectordatabases rag nlp machinelearning">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">A Geometria da Inteligência: Da Escassez de Dados à Era de Vector Databases</h3><p>Se o NLP nos ensinou a processar linguagem, e os LLMs nos deram a escala, os Vector Databases são o que finalmente conferem “contexto e verdade” à IA moderna.</p>
+<p>1. O Fundamento: como explora Joel Grus em “Data Science do Zero”, o KNN e a Maldição da Dimensionalidade são os pilares invisíveis da revolução atual.</p>
+<p>2. A Evolução: o guia “Generative AI and LLMs For Dummies” clarifica a transição das redes sequenciais para os Transformers, onde a linguagem vira embeddings.</p>
+<p>3. A Chave de Ouro: conforme o Whitepaper da Canonical, o futuro da IA corporativa está no RAG — o LLM como motor de raciocínio, o Banco de Dados Vetorial como memória factual.</p>
+<p>A IA Generativa não é apenas sobre gerar texto, mas sobre recuperação inteligente em espaços vetoriais.</p>
+<p>Referências: GRUS, Joel. Data Science do Zero. Alta Books, 2016. | BAUM, David. Generative AI and LLMs For Dummies: Snowflake Special Edition. Wiley, 2024. | CANONICAL. Vector databases as the data foundation for generative AI applications. 2024.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=Data%20Science%20do%20Zero%20Joel%20Grus" target="_blank" rel="noopener">Data Science do Zero — Joel Grus</a></li><li><a href="https://www.google.com/search?tbm=bks&amp;q=Generative%20AI%20and%20LLMs%20For%20Dummies%20David%20Baum" target="_blank" rel="noopener">Generative AI and LLMs For Dummies — David Baum</a></li><li><a href="https://www.google.com/search?tbm=bks&amp;q=Vector%20databases%20as%20the%20data%20foundation%20for%20generative%20AI%20applications%20Canonical" target="_blank" rel="noopener">Vector databases as the data foundation for generative AI — Canonical</a></li></ul></div>
+        <div class="tags"><span class="tag">#VectorDatabases</span><span class="tag">#RAG</span><span class="tag">#NLP</span><span class="tag">#MachineLearning</span></div>
+      </article>
+
+      <article class="post" id="t07" data-tags="bigdata hadoop spark datadriven">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Maratona imersiva de estudos focada em Big Data: 3 takeaways</h3><p>Recentemente concluí uma maratona imersiva de estudos focada em Big Data, explorando desde a infraestrutura técnica até a estratégia de negócio.</p>
+<p>1️⃣ Não é sobre o tamanho, é sobre o VALOR — o modelo SMART (Strategy → Measure → Apply → Report → Transform) ainda é essencial.</p>
+<p>2️⃣ O Ecossistema Hadoop é vasto, mas poderoso — Hive, Spark e Kafka integrados para processar dados de forma distribuída; escalabilidade horizontal mudou as regras do jogo.</p>
+<p>3️⃣ A era da TI Cognitiva — Big Data é o combustível para o Machine Learning e a automação; casos reais de IoT provam que o futuro já é Data-Driven.</p>
+<p>E o que acha dos 5 V&#x27;s do Big Data? Ainda são suficientes, ou já deveríamos adicionar mais alguns?</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">An immersive Big Data study marathon: 3 takeaways</h3><p>I recently completed an immersive Big Data study marathon, exploring everything from technical infrastructure to business strategy.</p>
+<p>1) It&#x27;s not about size, it&#x27;s about VALUE — the SMART model (Strategy → Measure → Apply → Report → Transform) remains essential.</p>
+<p>2) The Hadoop Ecosystem is vast yet powerful — Hive, Spark, and Kafka integrate to process data in a distributed manner; horizontal scalability changed the game.</p>
+<p>3) The era of Cognitive IT — Big Data is the fuel for Machine Learning and automation; real-world IoT cases prove the future is Data-Driven.</p>
+<p>And what do you think about the 5 V&#x27;s of Big Data? Are they still enough, or should we add a few more?</p></div>
+        
+        <div class="tags"><span class="tag">#BigData</span><span class="tag">#Hadoop</span><span class="tag">#Spark</span><span class="tag">#DataDriven</span></div>
+      </article>
+
+      <article class="post" id="t08" data-tags="estatística linguagemr rstats">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Estatística com R: o calcanhar de Aquiles de muitos profissionais de dados?</h3><p>Depois de mergulhar nas ferramentas pesadas do Big Data, percebo o quanto é relevante entender a fundo desde a estatística descritiva até a inferência.</p>
+<p>A minha dica é utilizar o R como ferramenta prática — ele permite transformar bits em decisões estratégicas reais.</p>
+<p>Outra dica no mesmo tema: o livro “Introdução à Estatística com R”, publicado pela Universidade Federal de Alfenas (Unifal-MG) em 2020, pelos professores Eric Batista Ferreira e Marcelo Silva de Oliveira. Um guia introdutório que ensina os fundamentos da estatística usando R — fundamental também para consolidar a base de Machine Learning, Deep Learning e IA.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=Introdu%C3%A7%C3%A3o%20%C3%A0%20Estat%C3%ADstica%20com%20R%20Eric%20Ferreira%20Marcelo%20Oliveira" target="_blank" rel="noopener">Introdução à Estatística com R — Ferreira &amp; Oliveira (Unifal-MG)</a></li></ul></div>
+        <div class="tags"><span class="tag">#Estatística</span><span class="tag">#LinguagemR</span><span class="tag">#RStats</span></div>
+      </article>
+
+      <article class="post" id="t09" data-tags="vibecoding aiagent futureofwork">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O Futuro dos Agentes de IA: Da Ficção para a Nossa Realidade</h3><p>IAs avançadas, como o Claude, estão indo além de apenas responder perguntas — estão se tornando verdadeiros agentes inteligentes, e você não precisa ser programador para começar a usar isso hoje.</p>
+<p>1. IA não é apenas para programadores: com ferramentas no-code, criamos automações visuais e simples.</p>
+<p>2. A diferença entre Chatbot e Agente: o chatbot responde ao que você escreve; o agente entende o objetivo, raciocina, usa ferramentas externas e resolve problemas de ponta a ponta.</p>
+<p>3. Acessibilidade do ecossistema: plataformas modernas democratizam o acesso à inteligência de grandes modelos de linguagem.</p>
+<p>Referências: Generative AI with LangChain (Ben Auffarth); Mastering Large Language Models (Julien Simon); Introdução aos Agentes de LLM (Nyctea Technology); documentação de LangChain e LangGraph.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">The Future of AI Agents: From Fiction to Our Reality</h3><p>Advanced AIs, like Claude, are going beyond just answering questions — they are becoming true intelligent agents, and you don&#x27;t need to be a programmer to start using this today.</p>
+<p>1. AI isn&#x27;t just for programmers: no-code tools let us build powerful automation flows visually.</p>
+<p>2. The difference between a Chatbot and an Agent: a chatbot responds to input; an agent understands the goal, reasons, uses external tools, and solves problems end to end.</p>
+<p>3. Ecosystem accessibility: modern platforms democratize access to large language model intelligence.</p>
+<p>References: Generative AI with LangChain (Ben Auffarth); Mastering Large Language Models (Julien Simon); Introduction to LLM Agents (Nyctea Technology); LangChain/LangGraph documentation.</p></div>
+        
+        <div class="tags"><span class="tag">#VibeCoding</span><span class="tag">#AIAgent</span><span class="tag">#FutureOfWork</span></div>
+      </article>
+
+      <article class="post" id="t10" data-tags="apachespark bigdata dataengineering">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Do Caos à Automação: O que aprendi com “Spark: The Definitive Guide”</h3><p>Dominar o processamento de Big Data não é apenas sobre escrever código, é sobre entender a arquitetura da eficiência. O clássico de Bill Chambers e Matei Zaharia confirma: o Apache Spark 2.0+ mudou as regras do jogo.</p>
+<p>1. A Era das APIs Estruturadas: o verdadeiro poder está no motor Catalyst, que otimiza planos de execução automaticamente.</p>
+<p>2. Lazy Evaluation: o Spark constrói um grafo de execução e só age quando necessário, transformando processos pesados em pipelines automatizados.</p>
+<p>3. Unificação: Structured Streaming, MLlib — o Spark é um motor unificado, do laboratório à produção em massa.</p>
+<p>Trabalhar com Spark é como explorar um mapa complexo de um Metroidvania: intimidador no início, mas ao entender a arquitetura você ganha superpoderes para atravessar volumes massivos de dados.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=Spark%20The%20Definitive%20Guide%20Bill%20Chambers%20Matei%20Zaharia" target="_blank" rel="noopener">Spark: The Definitive Guide — Chambers &amp; Zaharia</a></li></ul></div>
+        <div class="tags"><span class="tag">#ApacheSpark</span><span class="tag">#BigData</span><span class="tag">#DataEngineering</span></div>
+      </article>
+
+      <article class="post" id="t11" data-tags="algoritmos machinelearning cormen dataengineering">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">A Bíblia dos Algoritmos: Cormen e o Machine Learning de hoje</h3><p>Revisitando minhas anotações sobre a famosa “Bíblia dos Algoritmos” de Thomas Cormen, a conexão com o que faço hoje como Cientista de Dados ficou mais clara.</p>
+<p>1. Árvores de Busca Binária vs. Árvores de Decisão: a lógica de decisão por ramificação é a mesma, mas o critério evolui da comparação simples para o ganho de informação.</p>
+<p>2. Programação Dinâmica vs. Otimização em Redes Neurais: vemos isso de forma análoga no Backpropagation e no Reinforcement Learning.</p>
+<p>3. Ordenação e Big Data: a eficiência do Merge Sort é a base fundamental para o processamento em larga escala (Spark, Hadoop).</p>
+<p>Minha dica: não ignore os clássicos. Eles são o plano de fundo que dá suporte às inovações mais modernas.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=Introduction%20to%20Algorithms%20Thomas%20Cormen" target="_blank" rel="noopener">Introduction to Algorithms — Thomas Cormen</a></li></ul></div>
+        <div class="tags"><span class="tag">#Algoritmos</span><span class="tag">#MachineLearning</span><span class="tag">#Cormen</span><span class="tag">#DataEngineering</span></div>
+      </article>
+
+      <article class="post" id="t12" data-tags="datamesh digitaltransformation arquiteturadedados">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Repensando a Arquitetura de Dados em Grandes Corporações</h3><p>Revi o conceito de “Data Mesh: Entregando valor em escala e orientado a dados” (Zhamak Dehghani), e é impossível não traçar paralelos com os desafios de modernizar infraestruturas públicas.</p>
+<p>O modelo de banco de dados centralizado — por anos o padrão ouro — tornou-se um “desastre de acoplamento” à medida que a quantidade de aplicações e a necessidade de agilidade cresceram.</p>
+<p>Na minha jornada automatizando dashboards e criando modelos de classificação via NLP, percebi que a tecnologia só entrega valor real quando a arquitetura permite descentralização e autonomia — criar ecossistemas onde o dado flui, em vez de ficar represado em silos.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=Data%20Mesh%20Zhamak%20Dehghani" target="_blank" rel="noopener">Data Mesh — Zhamak Dehghani</a></li></ul></div>
+        <div class="tags"><span class="tag">#DataMesh</span><span class="tag">#DigitalTransformation</span><span class="tag">#ArquiteturaDeDados</span></div>
+      </article>
+
+      <article class="post" id="t13" data-tags="deeplearning datascience ai dataengineering">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Redes neurais aprendem igual a gente: errando, ajustando, errando de novo</h3><p>Mas por dentro, esse processo envolve decisões matemáticas muito precisas: qual função decide se o neurônio “dispara”? Qual algoritmo ajusta os pesos após cada erro? Por que redes muito profundas simplesmente param de aprender?</p>
+<p>Essas perguntas têm nome: funções de ativação, otimizadores e o vanishing gradient problem.</p>
+<p>Fiz um carrossel com tudo isso destrinchado — do Sigmoid ao Adam — em linguagem direta.</p></div>
+        
+        <div class="tags"><span class="tag">#deeplearning</span><span class="tag">#datascience</span><span class="tag">#ai</span><span class="tag">#dataengineering</span></div>
+      </article>
+
+      <article class="post" id="t13b" data-tags="stanford dataengineering mckinsey databricks ai">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O Click-Bait do Bem (Curiosidade Científica e Prática da Semana)</h3><p>1. Movimentos Institucionais e Pesquisa de Ponta. Stanford une IA e Data Science sob um único instituto (Stanford News, 4 de maio de 2026): o objetivo é acelerar a pesquisa colaborativa, com abordagem centrada no ser humano para estudar os impactos da IA na sociedade.</p>
+<p>2. Mapeamento de riscos e desastres com IA. Pesquisadores do Joint Research Centre publicaram na Nature Scientific Data (5 de maio de 2026), com a Engineering Ingegneria Informatica e a Universidade de Louvain: IA para analisar uma década de notícias globais sobre desastres, transformando textos em narrativas estruturadas e grafos de conhecimento.</p>
+<p>3. Ciência social computacional multimodal. A Universidade de Birmingham destacou (5 de maio de 2026) como a análise de dados avançou para além da leitura de textos — algoritmos hoje extraem contexto de vídeos, áudios e memes, com o desafio de manter a validação estatística.</p>
+<p>4. Foco em ROI e Maturidade de Dados: o mercado saiu da fase de hype puro para uma fase de gestão e valor de negócio — o cargo de Data Product Manager ganhou força (McKinsey &amp; Company, dezembro de 2025).</p>
+<p>5. Engenharia de Dados 2.0: a IA Generativa está incorporada nativamente às ferramentas de orquestração de dados; o foco é automação de governança e observabilidade (Databricks e dbt Labs, fevereiro de 2026).</p></div>
+        
+        <div class="tags"><span class="tag">#Stanford</span><span class="tag">#DataEngineering</span><span class="tag">#McKinsey</span><span class="tag">#Databricks</span><span class="tag">#AI</span></div>
+      </article>
+
+      <article class="post" id="t14" data-tags="rstats datascience sériestemporais">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Aprender R fazendo, não decorando</h3><p>Revisando o livro “Projetos R Para Leigos”, do Joseph Schmuller: por que ele funciona onde muitos manuais falham. Cada capítulo é um projeto completo — você não estuda ggplot2, você constrói visualizações; não lê sobre regressão, você modela dados reais.</p>
+<p>O que ele cobre: fundamentos de R e RStudio; visualização com ggplot2 e dashboards com Shiny; probabilidade, regressão e ANOVA; machine learning introdutório (árvores de decisão, k-means, redes neurais); séries temporais, mapas e análise esportiva.</p>
+<p>Meu projeto favorito: séries temporais. O capítulo ensina o ciclo completo — transformar em objeto de série temporal, decompor em tendência/sazonalidade/ruído, visualizar e prever. O caos vira estrutura.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=Projetos%20R%20Para%20Leigos%20Joseph%20Schmuller" target="_blank" rel="noopener">Projetos R Para Leigos — Joseph Schmuller</a></li></ul></div>
+        <div class="tags"><span class="tag">#RStats</span><span class="tag">#DataScience</span><span class="tag">#SériesTemporais</span></div>
+      </article>
+
+      <article class="post" id="t15" data-tags="datascience dataengineering">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O cara que definiu o que você aprendeu sobre dados nunca escreveu uma linha de código</h3><p>Tim O&#x27;Reilly se formou em Letras Clássicas em Harvard, depois escreveu um manual de Unix — e criou a editora que publicou o 1º best-seller sobre a internet, em 1992, com menos de 200 sites no ar.</p>
+<p>2000: capa da Publishers Weekly: “A Internet foi construída com livros da O&#x27;Reilly.” Ninguém discordou.</p>
+<p>Livros que separam quem roda notebook de quem entende: Designing Data-Intensive Applications (Kleppmann); Hands-On Machine Learning (Géron); Python for Data Analysis (McKinney); Fluent Python (Ramalho, brasileiro, ref. mundial).</p>
+<p>Qual você terminou de verdade?</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">The man who shaped how you learned data never wrote a line of code</h3><p>Tim O&#x27;Reilly studied Classics at Harvard, then wrote a Unix manual — and built the firm that published the internet&#x27;s first bestseller in 1992, when under 200 websites existed.</p>
+<p>2000: Publishers Weekly&#x27;s cover read “The Internet Was Built with O&#x27;Reilly Books.” No one argued.</p>
+<p>Books that separate people who run notebooks from people who understand them: Designing Data-Intensive Applications (Kleppmann); Hands-On Machine Learning (Géron); Python for Data Analysis (McKinney); Fluent Python (Ramalho, Brazilian, global ref).</p>
+<p>Which have you actually finished?</p></div>
+        
+        <div class="tags"><span class="tag">#DataScience</span><span class="tag">#DataEngineering</span></div>
+      </article>
+
+      <article class="post" id="t16" data-tags="machinelearning ciênciadedados aprendizadodemáquina">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Cada modelo é uma aposta diferente sobre a estrutura do mundo</h3><p>Tem uma tentação, em ciência de dados, de tratar cada algoritmo como uma caixa isolada: KNN aqui, XGBoost ali, PCA num canto separado. Mas quando você organiza tudo lado a lado, o que aparece é um mapa de escolhas.</p>
+<p>Ridge e Lasso não são só técnicas de regularização — são duas filosofias sobre o que fazer com o excesso: uma amortece, a outra corta. Bagging e Boosting representam duas teorias diferentes de como o coletivo supera o individual. Até o PCA é uma aposta de que a complexidade observável esconde poucos eixos que realmente importam.</p>
+<p>Reuni isso num carrossel de 16 slides — regressão, séries temporais, classificação, ensemble learning e aprendizado não supervisionado, do zero à aplicação. Todo modelo é uma simplificação — a arte está em escolher a simplificação certa pro problema certo.</p></div>
+        
+        <div class="tags"><span class="tag">#MachineLearning</span><span class="tag">#CiênciaDeDados</span><span class="tag">#AprendizadoDeMáquina</span></div>
+      </article></div>
+    </section>
+
+    <section class="category" id="cat-etica">
+      <h2 class="category-title">IA, Ética &amp; Governança <span class="count">(5)</span></h2>
+      <div class="posts">
+      <article class="post" id="e01" data-tags="inteligenciaartificial promptengineering asimov éticadigital softskills">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Engenharia de Prompt ou Engenharia Humana?</h3><p>Um colega do trabalho me disse que não faz sentido tratar IA com respeito. “Ela não vai sair do computador e te dar três tiros”, ele brincou. Mas quem já leu “Eu, Robô” ou “Fundação” sabe que a questão não é o que a máquina sente, e sim o que nós revelamos ao interagir com ela.</p>
+<p>Como cientista de dados, sei que bons prompts são essenciais. Mas também sei que educação, clareza e intenção moldam não só os resultados da IA — moldam a gente.</p>
+<p>Segundo um estudo citado pela Forbes, comandos educados geram respostas mais precisas, menos enviesadas e com menos omissões. Em alguns modelos, comandos grosseiros chegaram a reduzir a performance em até 30%.</p>
+<p>E mais: pessoas que mantêm cortesia com a IA tendem a ter mais inteligência emocional nas relações humanas. Não é sobre a IA ter sentimentos. É sobre como você escolhe se comunicar, mesmo quando ninguém está olhando.</p></div>
+        
+        <div class="tags"><span class="tag">#InteligenciaArtificial</span><span class="tag">#PromptEngineering</span><span class="tag">#Asimov</span><span class="tag">#ÉticaDigital</span><span class="tag">#SoftSkills</span></div>
+      </article>
+
+      <article class="post" id="e02" data-tags="inteligênciaartificial ia leideinteligênciaartificial uniãoeuropéia">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">A Lei de IA da União Europeia (em vigor desde 1º de agosto de 2024)</h3><p>A crescente presença da inteligência artificial exige regulamentações que garantam seu uso ético, seguro e transparente. A União Europeia aprovou a Lei da Inteligência Artificial, considerada pioneira ao estabelecer um marco legal abrangente.</p>
+<p>A Lei classifica os sistemas de IA em cinco categorias de risco — mínimo, limitado, alto, inaceitável e propósito geral — e impõe exigências proporcionais à gravidade de cada aplicação. Sistemas de alto risco, como saúde, segurança e justiça, devem passar por avaliações de impacto e garantir supervisão humana.</p>
+<p>A fiscalização é feita por autoridades nacionais e europeias, com penalidades severas, e há incentivo à inovação por meio de ambientes de teste regulatórios.</p>
+<p>Apesar dos avanços, a Lei enfrenta críticas por permitir reconhecimento facial em tempo real, depender da autorregulação e não abordar suficientemente os impactos da reutilização de modelos treinados. Ainda assim, representa um passo importante na construção de uma governança global da IA.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://lnkd.in/dEf9aSti" target="_blank" rel="noopener">Publicação original / fonte</a></li></ul></div>
+        <div class="tags"><span class="tag">#InteligênciaArtificial</span><span class="tag">#IA</span><span class="tag">#LeideInteligênciaArtificial</span><span class="tag">#UniãoEuropéia</span></div>
+      </article>
+
+      <article class="post" id="e03" data-tags="sciencefiction dataethics isaacasimov aiethics">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O que Asimov já sabia sobre ética de dados — antes de “dados” virarem um problema ético</h3><p>Isaac Asimov formou-se em química, fez doutorado em bioquímica, deu aulas de medicina — e escreveu ou editou mais de 500 livros. Em 1942, no conto “Runaround”, formalizou algo que hoje trataríamos como pauta de governança de IA: regras éticas para sistemas artificiais autônomos.</p>
+<p>As Três Leis não são sobre robôs. São sobre poder assimétrico. Asimov entendeu, décadas antes de qualquer discussão sobre governança de IA, que o problema central de um sistema autônomo não é a inteligência dele — é a hierarquia entre quem decide, quem é afetado, e quem acessa a lógica por trás da decisão.</p>
+<p>Troque robô por modelo preditivo, e as Três Leis viram um esboço de qualquer framework de ética de dados em saúde, crédito ou justiça criminal. A parte mais valiosa da obra é que quase todos os contos mostram como regras bem-intencionadas produzem consequências não previstas — ponto por ponto, o vocabulário que hoje chamamos de “alignment problem”.</p>
+<p>Quando lidamos com dados de saúde, crédito ou comportamento de usuário, a tentação é tratar ética como compliance. Asimov sugere outra postura: a ética precisa estar na arquitetura da decisão, não na auditoria dela.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">What Asimov already knew about data ethics — before “data” became an ethical problem</h3><p>Isaac Asimov held a degree in chemistry, a PhD in biochemistry, and taught medicine — while writing or editing more than 500 books. In 1942, in “Runaround”, he formalized something we&#x27;d now treat as an AI governance topic: ethical rules for autonomous artificial systems.</p>
+<p>The Three Laws aren&#x27;t about robots. They&#x27;re about asymmetric power. Asimov understood, decades before any discussion of AI governance, that the core problem of an autonomous system isn&#x27;t its intelligence — it&#x27;s the hierarchy between who decides, who is affected, and who has access to the logic behind the decision.</p>
+<p>Swap “robot” for “predictive model,” and the Three Laws become a rough sketch of any data ethics framework in healthcare, credit, or criminal justice. Nearly every story shows how well-intentioned rules produce unintended consequences — point for point, what we now call the “alignment problem.”</p>
+<p>When we handle data on health, credit, or user behavior, the temptation is to treat ethics as compliance. Asimov suggests a different posture: ethics needs to live in the architecture of the decision, not in its audit.</p></div>
+        
+        <div class="tags"><span class="tag">#ScienceFiction</span><span class="tag">#DataEthics</span><span class="tag">#IsaacAsimov</span><span class="tag">#AIEthics</span></div>
+      </article>
+
+      <article class="post" id="e04" data-tags="artificialintelligence dataethics afraidmovie cybersecurity">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">IA: Facilitadora ou Vigilante sem Ética?</h3><p>Programando meu OpenClaw de madrugada, fiz uma pausa e comecei a assistir “Justiça Artificial” (originalmente “Afraid”), um dos Top 10 da semana.</p>
+<p>O incômodo é imediato: o filme toca numa ferida aberta — a linha tênue entre a conveniência da IA e a nossa perda de autonomia. Não se trata apenas de quão rápida a IA pode ser, mas de quem detém o controle e como a transparência é aplicada.</p>
+<p>A pergunta que fica: estamos treinando as máquinas para nos ajudar ou permitindo que elas nos moldem? O limite entre assistência e intrusão está sendo respeitado na vida real?</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">AI: Efficiency... or the Rise of the Machines?</h3><p>Late last night, during a sleepless coding session on my OpenClaw, I hit pause to watch “Afraid” (released as Justiça Artificial in Brazil), a Top 10 title.</p>
+<p>The discomfort was immediate — it strikes a nerve regarding the thin line between AI convenience and our total loss of autonomy. It&#x27;s not just about how fast the AI processes, it&#x27;s about who holds the controls and how transparent the code really is.</p>
+<p>Are we training the machines to serve us, or are we being programmed by them? Is the boundary between assistance and intrusion already being crossed in the real world?</p></div>
+        
+        <div class="tags"><span class="tag">#ArtificialIntelligence</span><span class="tag">#DataEthics</span><span class="tag">#AfraidMovie</span><span class="tag">#CyberSecurity</span></div>
+      </article>
+
+      <article class="post" id="e05" data-tags="lgpd proteçãodedados cibersegurança compliance dpo">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Meta em julgamento nos EUA, e a LGPD segue seu curso no Brasil</h3><p>O julgamento federal histórico contra a Meta nos EUA teve início nesta semana, em Oakland, na Califórnia. O processo, liderado por uma coalizão bipartidária de 29 estados, acusa a dona do Instagram e do Facebook de projetar deliberadamente algoritmos viciantes que prejudicam a saúde mental de crianças e adolescentes.</p>
+<p>Enquanto isso, no Brasil, a LGPD vai bem obrigado — a Lei de 2018 segue seu curso. O livro “Guia Prático de Implementação da LGPD”, de Daniel Donda, traz várias nuances importantes.</p>
+<p>Em pouco mais de 120 páginas, o autor responde às perguntas que toda empresa se faz na prática: por onde começar, onde estão os riscos, como montar um comitê de LGPD, como mapear os dados que a empresa realmente trata, e como preparar um Relatório de Impacto à Proteção de Dados (RIPD).</p>
+<p>O livro traz clareza sobre os papéis de controlador e operador, dedica atenção séria à segurança da informação (phishing, ransomware, engenharia social, nuvem), e sai do “o que a lei diz” para o “o que fazer na segunda-feira de manhã”.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=Guia%20Pr%C3%A1tico%20de%20Implementa%C3%A7%C3%A3o%20da%20LGPD%20Daniel%20Donda" target="_blank" rel="noopener">Guia Prático de Implementação da LGPD — Daniel Donda</a></li></ul></div>
+        <div class="tags"><span class="tag">#LGPD</span><span class="tag">#ProteçãoDeDados</span><span class="tag">#Cibersegurança</span><span class="tag">#Compliance</span><span class="tag">#DPO</span></div>
+      </article></div>
+    </section>
+
+    <section class="category" id="cat-filosofia">
+      <h2 class="category-title">Filosofia &amp; Ciências Sociais <span class="count">(15)</span></h2>
+      <div class="posts">
+      <article class="post" id="f01" data-tags="antropologia cultura liderança havaí amazônia mana ufg">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O poder não pode ficar parado: lições sobre o “Mana” e a “Terra do Meio”</h3><p>Recordando textos de antropologia lidos na UFG: uma realeza onde o governante não podia se acomodar — precisava se mudar entre sete picos sagrados conforme as estações, para renovar o Mana, a força vital que garante a fertilidade e a ordem da sociedade.</p>
+<p>1. O Rei Viajante (Havaí antigo): segundo Valerio Valeri (“Kingship and Sacrifice”), o rei deveria circular por templos em pontos elevados e picos vulcânicos — um movimento ritualístico para “capturar” a energia divina.</p>
+<p>2. A “Terra do Meio” (povos Apurinã, Brasil): a antropóloga Juliana Schiel mostra que o território é um mapa de memórias míticas; ocupar e mudar de território são formas de reativar a história do grupo.</p>
+<p>Lições: seja nos vulcões da Polinésia ou nas terras baixas da Amazônia, a mensagem é a mesma — o poder é uma jornada, não um destino. Ocupar um lugar é, antes de tudo, um ato de renovação.</p></div>
+        
+        <div class="tags"><span class="tag">#Antropologia</span><span class="tag">#Cultura</span><span class="tag">#Liderança</span><span class="tag">#Havaí</span><span class="tag">#Amazônia</span><span class="tag">#Mana</span><span class="tag">#UFG</span></div>
+      </article>
+
+      <article class="post" id="f02" data-tags="sociology kdramas leadership">
+        
+        
+        <div class="lang-panel active" data-lang="EN"><h3 class="post-title">From Warriors to Spectators: What I learned from Norbert Elias</h3><p>During my Social Sciences degree, I delved into Norbert Elias&#x27;s “The Civilizing Process”, and it completely changed how I view human behavior within organizations.</p>
+<p>1. Psychogenesis — the control of impulses: etiquette is a tool for restraint; the great victory of civilization is self-control, transforming social pressure into internal self-restraint.</p>
+<p>2. Sociogenesis — the State and interdependence: the rise of the modern State created a monopoly on violence; the medieval warrior had to transform into a courtier, surviving through strategy rather than the sword.</p>
+<p>A fascinating contrast: while the West “disarmed” itself over centuries, the Chinese elite already found honor in calligraphy and high culture, without weapons.</p>
+<p>Watching my wife enjoy her K-Dramas, everything made sense through Elias&#x27;s lens: Western action movies still celebrate the knight who resolves conflicts through force; K-Dramas reflect a civilization of rituals and extreme self-control — the climax is a heavy silence, not a punch.</p>
+<p>Whether configuring my new Clawdbot or in a tough negotiation: the greater our self-control, the greater our capacity for influence.</p></div>
+        
+        <div class="tags"><span class="tag">#Sociology</span><span class="tag">#KDramas</span><span class="tag">#Leadership</span></div>
+      </article>
+
+      <article class="post" id="f03" data-tags="tocqueville democracia liberdade">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Tocqueville: O “Profeta” que previu as Redes Sociais e o Estado Moderno</h3><p>Alexis de Tocqueville previu, há quase 200 anos em “A Democracia na América”, muito do que vivemos hoje.</p>
+<p>1. A Tirania da Maioria e o “Cancelamento”: a maioria traça um círculo em torno do pensamento — dentro dele você é livre, fora dele enfrenta o ostracismo. O “cancelamento” nas redes é a versão digital disso.</p>
+<p>2. O Despotismo Brando: uma opressão “suave, minuciosa e ordenada”, onde o Estado se torna um tutor benevolente que provê tudo até o cidadão perder a faculdade de agir e pensar por si mesmo.</p>
+<p>3. Democracias Morrem: fazendo ponte com Levitsky e Ziblatt, a democracia pode “apodrecer” por dentro quando os cidadãos trocam a liberdade pela promessa de ordem.</p>
+<p>Democracia não é piloto automático — exige o “hábito do coração”: a disposição de participar, tolerar a divergência e não esperar que o Estado resolva tudo.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">Tocqueville: The “Prophet” who predicted Social Media and the Modern State</h3><p>Alexis de Tocqueville predicted, nearly 200 years ago in “Democracy in America”, much of what we live today.</p>
+<p>1. The Tyranny of the Majority and “Cancel Culture”: the majority draws a circle around thought — inside it you&#x27;re free, outside it you face ostracism. Cancel culture is the digital version of this.</p>
+<p>2. Soft Despotism: a “mild, thorough, and gentle” oppression, where the State becomes a benevolent guardian that provides everything until the citizen loses the ability to act and think for themselves.</p>
+<p>3. Democracies Die: bridging with Levitsky and Ziblatt, democracy can rot from within when citizens trade liberty for the promise of order.</p>
+<p>Democracy isn&#x27;t autopilot — it requires “habits of the heart”: the willingness to participate, tolerate dissent, and not expect the State to solve every dilemma.</p></div>
+        
+        <div class="tags"><span class="tag">#Tocqueville</span><span class="tag">#Democracia</span><span class="tag">#Liberdade</span></div>
+      </article>
+
+      <article class="post" id="f04" data-tags="philosophy kant umbertoeco vibecoding">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O que Kant e Umberto Eco ensinam sobre a IA de hoje?</h3><p>Revisitei “Crítica da Razão Pura” e “Crítica da Razão Prática” de Kant. Mas é na “Crítica da Faculdade de Julgar” que ele toca em algo essencial para a era da IA: o Juízo de Gosto — o belo como “prazer desinteressado”.</p>
+<p>Umberto Eco, em “História da Beleza”, lembra que a beleza é histórica: o que era harmônico na Grécia Antiga difere do que é belo hoje. Não é uma constante matemática; é reflexo do zeitgeist.</p>
+<p>Quando treinamos modelos de GenAI ou algoritmos de recomendação, tentamos codificar o “Juízo” kantiano. O desafio: como ensinar uma máquina a identificar o Belo se essas definições são alvos móveis? O risco: replicar preconceitos estéticos e culturais de uma única época, perdendo a pluralidade que Eco defendia.</p>
+<p>Tecnologia nos dá o poder de processar; filosofia nos dá a capacidade de julgar.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">What do Kant and Umberto Eco teach us about today&#x27;s AI?</h3><p>I revisited Kant&#x27;s Critique of Pure Reason and Critique of Practical Reason. But it&#x27;s in the Critique of Judgment that he touches on something essential for the AI era: the Judgment of Taste — beauty as “disinterested pleasure.”</p>
+<p>Umberto Eco, in On Beauty, reminds us that beauty is historical: what was harmonious in Ancient Greece differs from today. It&#x27;s not a mathematical constant; it&#x27;s a reflection of the zeitgeist.</p>
+<p>When we train GenAI models or recommendation algorithms, we&#x27;re codifying Kantian “Judgment.” The challenge: how do we teach a machine to identify the Beautiful if these definitions are moving targets? The risk: replicating the aesthetic biases of a single era.</p>
+<p>Technology gives us the power to process, but philosophy gives us the capacity to judge.</p></div>
+        
+        <div class="tags"><span class="tag">#Philosophy</span><span class="tag">#Kant</span><span class="tag">#UmbertoEco</span><span class="tag">#VibeCoding</span></div>
+      </article>
+
+      <article class="post" id="f05" data-tags="hannaharendt filosofiapolitica totalitarismo">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O Eclipse da Humanidade e a Gênese do Domínio Total: Hannah Arendt e a Contemporaneidade</h3><p>Revendo “As Origens do Totalitarismo”, fica claro que o maior perigo de um regime autoritário não é só o controle do que você faz, mas o domínio até sobre o que você sente e pensa.</p>
+<p>Arendt ensinou que o totalitarismo floresce no solo da solidão e da atomização social. Hoje, o controle é sutil, invisível e digital: a Captura do Sentir (economia da atenção, algoritmos que manipulam emoções); a Nova Atomização (bolhas digitais como as novas ideologias); o Panóptico Algorítmico (autocensura como norma).</p>
+<p>“O fim é também um novo começo”. O totalitarismo é uma ferida aberta que pode ser reativada sempre que perdemos a capacidade de distinguir fato de ficção. A verdadeira resistência é recuperar a pluralidade.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">The Eclipse of Humanity and the Genesis of Total Domination: Hannah Arendt and Contemporaneity</h3><p>Revisiting “The Origins of Totalitarianism”, it&#x27;s clear that the paramount danger of an authoritarian regime lies not merely in regulating overt behavior, but in dominion over what we feel and think.</p>
+<p>Arendt posits that totalitarianism thrives on loneliness and social atomization. Today: the Capture of Affect (attention economy, algorithms triggering fear/euphoria); the New Atomization (echo chambers as modern ideologies); the Algorithmic Panopticon (self-censorship as the norm).</p>
+<p>“The end is also a new beginning.” Totalitarianism is an open wound reactivated whenever we lose the capacity to distinguish fact from fiction. Genuine resistance requires reclaiming plurality.</p></div>
+        
+        <div class="tags"><span class="tag">#HannahArendt</span><span class="tag">#FilosofiaPolitica</span><span class="tag">#Totalitarismo</span></div>
+      </article>
+
+      <article class="post" id="f06" data-tags="homoludens vibecoding dataengineering philosophy">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O “Círculo Mágico” dos Dados: Por que Huizinga não previu o nosso jogo de máquinas?!</h3><p>Johan Huizinga, em “Homo Ludens”, temia que a modernidade e o utilitarismo matassem o espírito lúdico da cultura, nos transformando em meros operários.</p>
+<p>Com todo respeito, acho que ele subestimou o poder das máquinas de nos devolverem ao jogo. Quando desenho um pipeline ou ajusto um modelo de RAG, estou entrando num “Círculo Mágico”: um espaço onde a lógica dita as regras, mas a criatividade dita o movimento.</p>
+<p>O “Vibe Coding” é a liberdade de iterar com a curiosidade de quem descobre um novo mapa. Às vezes, o bug é só uma fase difícil que o jogo impôs. A tecnologia não nos mecanizou — deu um novo tabuleiro, infinitamente mais complexo e cheio de easter eggs.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">The “Magic Circle” of Data: Why Huizinga Never Grokked Our Machine Game</h3><p>Johan Huizinga, in “Homo Ludens”, feared that modernity&#x27;s obsession with technical efficiency was killing off the play-spirit of culture, turning us into cogs.</p>
+<p>With all due respect, I think he underestimated the machines&#x27; power to drop us right back into the game. When sketching a pipeline or tuning a RAG model, I&#x27;m stepping into a “Magic Circle” — logic lays down the rules, but creative vibes dictate the flow.</p>
+<p>&#x27;Vibe Coding&#x27; is the freedom to iterate with cosmic curiosity. The technology didn&#x27;t turn us into automatons — it handed us a brand-new board, packed with easter eggs.</p></div>
+        
+        <div class="tags"><span class="tag">#HomoLudens</span><span class="tag">#VibeCoding</span><span class="tag">#DataEngineering</span><span class="tag">#Philosophy</span></div>
+      </article>
+
+      <article class="post" id="f07" data-tags="collectiveintelligence pierrelévy ai">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">(discurso) O horizonte de eventos foi alcançado — Inteligência Coletiva</h3><p>“Meus caros, estamos aqui não para falar de tecnologia, mas de ontologia. Já cruzamos o horizonte de eventos. Vivemos em um estado pós-IA, onde o algoritmo é o próprio tecido da nossa cognição.”</p>
+<p>I. O Horizonte de Eventos foi Alcançado — não há “volta” para a pureza analógica.</p>
+<p>II. A Inteligência é Coletiva ou não é Inteligência: ela só existe no fluxo, no “entre”. Quem acumula o saber, o mata.</p>
+<p>III. A Urgência da Construção: o tempo é o ativo mais caro. Quem não está agora arquitetando, codificando e integrando sistemas de inteligência está perdendo o direito de participar do próximo ato da civilização.</p>
+<p>Texto baseado na obra de Pierre Lévy, Inteligência Coletiva.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">(speech) The Event Horizon Has Been Reached — Collective Intelligence</h3><p>“My friends, we are here not to talk about technology, but about ontology. We have already crossed the event horizon. We are living in a post-AI state, where the algorithm is the very fabric of our cognition.”</p>
+<p>I. The Event Horizon Has Been Reached — there is no going back to analog purity.</p>
+<p>II. Intelligence Is Collective, or It Is Not Intelligence at All: it only exists in the flow, in the “in-between.” If you hoard knowledge, you kill it.</p>
+<p>III. The Urgency of Construction: time is your most expensive asset. Anyone not architecting, coding, and integrating intelligence systems right now is losing the right to participate in the next act of civilization.</p>
+<p>Text based on the work of Pierre Lévy, Collective Intelligence.</p></div>
+        
+        <div class="tags"><span class="tag">#CollectiveIntelligence</span><span class="tag">#PierreLévy</span><span class="tag">#AI</span></div>
+      </article>
+
+      <article class="post" id="f08" data-tags="sociologia ia antropologia vibecoding">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">De Durkheim aos Algoritmos: Como a estrutura social se transformou?</h3><p>Durkheim nos ensinou que somos moldados por “fatos sociais” externos. A evolução do pensamento social nos leva por caminhos fascinantes:</p>
+<p>1. A Era da Estrutura (Durkheim): o indivíduo como produto da coesão social.</p>
+<p>2. A Virada da Diferença (Boas &amp; Lévi-Strauss): a estrutura como padrão lógico enraizado na história e no inconsciente.</p>
+<p>3. A Era do Drama (DaMatta): a estrutura vivida no cotidiano — o contraste entre o formal e o afetivo na cultura brasileira.</p>
+<p>4. O Presente (Latour &amp; Han): a era da auto-exploração e das redes — a tecnologia/IA como agente que atua na estrutura social; a auto-coerção substituiu o fato social imposto pelo Estado.</p>
+<p>A dialética hegeliana continua viva: cada avanço técnico (tese) encontra a resistência da nossa subjetividade (antítese), gerando novas formas de viver (síntese).</p></div>
+        
+        <div class="tags"><span class="tag">#Sociologia</span><span class="tag">#IA</span><span class="tag">#Antropologia</span><span class="tag">#VibeCoding</span></div>
+      </article>
+
+      <article class="post" id="f09" data-tags="antropologia diversidade cultura ufg">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Dados, Cultura e Tolerância: um livro esquecido na estante</h3><p>Reencontrei “O Antropólogo e Sua Magia”, de Vagner Gonçalves da Silva — livro que me transportou aos meus estudos antropológicos na UFG, sob mentoria do professor Pedro Paulo Pereira.</p>
+<p>Embora não tenha concluído a graduação formal em Ciências Sociais, vivi cinco anos de uma incursão intensa e apaixonada pelos assuntos humanos, que moldaram quem eu sou e como atuo hoje como Data Scientist.</p>
+<p>O livro discute o papel do pesquisador nas religiões de matriz africana e seus diálogos com o Catolicismo. Na minha casa a religião é uma ponte viva — fui criado no Espiritismo Kardecista, me tornei católico quando casei, e minha esposa é católica devota, hoje em romaria para Canindé (CE), terra natal de meu falecido pai.</p>
+<p>Não é porque pertenço a uma visão de mundo que devo dar as costas ao que não conheço. Conhecer o diferente não anula quem somos; expande.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">Data, Culture, and Tolerance: What a Forgotten Book Reminded Me</h3><p>I rediscovered “O Antropólogo e Sua Magia” by Vagner Gonçalves da Silva, which transported me back to my anthropological studies at UFG under Dr. Pedro Paulo Pereira.</p>
+<p>Though I did not conclude the formal degree, those five years of intensive immersion into human experience are a profound source of pride and still inform my praxis as a Data Scientist.</p>
+<p>The book explores Afro-Brazilian religions and their dialogue with Catholicism. In my own home, religion is a living bridge: raised in Kardecist Spiritism, I embraced Catholicism upon marriage; my wife is a devout Catholic, currently on pilgrimage to Canindé, Ceará — my late father&#x27;s birthplace.</p>
+<p>Encountering alterity does not diminish our identity; it expands it.</p></div>
+        
+        <div class="tags"><span class="tag">#Antropologia</span><span class="tag">#Diversidade</span><span class="tag">#Cultura</span><span class="tag">#UFG</span></div>
+      </article>
+
+      <article class="post" id="f10" data-tags="filosofiadaciência física datascience">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O Bêbado e a Equilibrista: Um debate entre o cosmos e a estatística</h3><p>Imagine uma mesa redonda atemporal: Newton abre com sua rigidez — “o universo é um mecanismo de precisão”. Einstein corrige: “a ordem é ilusão, o tempo dilata, o espaço curva”. Hawking ironiza: “o universo nasceu de uma singularidade onde a lógica desmorona, ele gosta de bagunça”.</p>
+<p>Mlodinow solta uma moeda: “sucesso, carreira, ciência — muitas vezes somos ruído estatístico que, por acaso, formou um padrão coerente”.</p>
+<p>Carl Sagan entra com “O Mundo Assombrado pelos Demônios”: “o erro não está em ser Newton ou Mlodinow — está em criar certezas para ignorar o mistério. O segredo não é prever o fim da música, mas aprender a dançar enquanto a luz ainda dura.”</p>
+<p>No dia a dia, vivemos esse conflito: queremos a precisão do relógio, mas lidamos com o andar do bêbado. Talvez nossa função seja a do equilibrista.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">The Drunk and the Tightrope Walker: A Debate Between the Cosmos and Statistics</h3><p>Newton opens with his rigidity: “The universe is a precision mechanism.” Einstein corrects him: “Order is illusion, Isaac. Reality is not a clock — it is an elastic bedsheet.” Hawking cuts in: “the universe was born from a singularity where logic collapses — it rather enjoys the mess.”</p>
+<p>Mlodinow drops a coin: “We are so often statistical noise that, by sheer chance, coalesced into a coherent pattern.”</p>
+<p>Carl Sagan enters with The Demon-Haunted World: “The mistake is not in being Newton or Mlodinow. It&#x27;s in manufacturing certainties to avoid confronting mystery. The secret is to learn to dance while the light still holds.”</p></div>
+        
+        <div class="tags"><span class="tag">#FilosofiaDaCiência</span><span class="tag">#Física</span><span class="tag">#DataScience</span></div>
+      </article>
+
+      <article class="post" id="f11" data-tags="física computaçãoquântica feynman filosofiadaciência">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O Bêbado e a Equilibrista 2: Feynman entra na roda</h3><p>Caltech, anos 60: “Professor, o senhor pode realmente explicar por que os elétrons se comportam assim, ou só sabe calcular?” Feynman: “Eu posso te ensinar as regras do jogo. Por que o jogo é esse, ninguém sabe. E quem disser que sabe, está mentindo.”</p>
+<p>Feynman entra na roda de Newton, Einstein, Hawking e Sagan com uma proposta desconfortável: não saber é o dado bruto — não o problema. Seus diagramas descrevem matematicamente as mesmas incertezas que atormentavam Einstein, mas aceitas como regra do jogo.</p>
+<p>Computadores quânticos não “resolvem” a superposição — usam-na como recurso. Aplicações hoje: otimização de rotas e cadeias logísticas; simulação molecular para descoberta de fármacos; machine learning quântico.</p>
+<p>Em 1981, Feynman foi o primeiro a sugerir publicamente: “a natureza não é clássica, e se você quer simular a natureza, é melhor fazer isso com mecânica quântica.”</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">The Drunkard and the Tightrope Walker 2: Feynman Joins the Table</h3><p>Caltech, the 1960s: “Professor, can you actually explain why electrons behave this way, or do you just know how to calculate it?” Feynman: “I can teach you the rules of the game. Why the game is what it is, nobody knows. And anyone who says they do is lying.”</p>
+<p>Feynman joins the roundtable with an uncomfortable proposal: not knowing is the raw data — not the problem. His diagrams mathematically describe the same uncertainties that troubled Einstein, accepted as a rule of the game.</p>
+<p>Quantum computers don&#x27;t “solve” superposition — they use it as a resource. Applications today: optimizing complex logistics; molecular simulation for drug discovery; quantum machine learning.</p>
+<p>In 1981, Feynman was the first to publicly suggest: “nature isn&#x27;t classical, and if you want to simulate nature, you&#x27;d better do it with quantum mechanics.”</p></div>
+        
+        <div class="tags"><span class="tag">#Física</span><span class="tag">#ComputaçãoQuântica</span><span class="tag">#Feynman</span><span class="tag">#FilosofiaDaCiência</span></div>
+      </article>
+
+      <article class="post" id="f12" data-tags="ciênciadedados complexidade física dadospúblicos">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Física em Doze Lições, energia e o que aprendi revisitando conceitos</h3><p>Lendo “Física em 12 Lições — Fáceis e não Tão Fáceis”, de Richard Feynman: energia não é uma “coisa” que existe; é uma capacidade de transformação que só se revela quando algo muda de estado.</p>
+<p>Um data lake é energia potencial: acumulada, sem valor até que alguém a libere através de uma pergunta certa. Um pipeline de streaming é energia cinética: só existe enquanto está em movimento. O ruído em uma base de dados é entropia térmica pura.</p>
+<p>A lição mais incômoda é a da conservação: não existe almoço grátis em nenhum sistema físico — nem em nenhum modelo preditivo. Viés e variância não se anulam; se transformam.</p>
+<p>Feynman dizia: a ciência é a arte de duvidar do que parece óbvio. Trabalhar com dados públicos é transformar energia potencial acumulada em ação real para quem precisa.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=F%C3%ADsica%20em%2012%20Li%C3%A7%C3%B5es%20Feynman" target="_blank" rel="noopener">Física em 12 Lições — Richard Feynman</a></li></ul></div>
+        <div class="tags"><span class="tag">#CiênciaDeDados</span><span class="tag">#Complexidade</span><span class="tag">#Física</span><span class="tag">#DadosPúblicos</span></div>
+      </article>
+
+      <article class="post" id="f13" data-tags="thomasjefferson dadoshistóricos datascience">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Thomas Jefferson, um dos pais fundadores, e a história contada por dados!</h3><p>Ele escreveu “Todos os homens são criados iguais” aos 33 anos, num rascunho que se tornaria a Declaração de Independência. E por quase dois séculos, quando perguntavam sobre os filhos de Sally Hemings — mulher que ele escravizava —, a resposta oficial era não.</p>
+<p>As evidências circunstanciais existiam havia décadas: cartas, datas de viagens, depoimentos dos próprios descendentes de Hemings — sistematicamente descartados porque a palavra de uma família escravizada pesava menos que a reputação de um fundador.</p>
+<p>Em 1998, um teste de DNA comparou o cromossomo Y de descendentes das duas famílias. E a versão que sobreviveu duzentos anos não sobreviveu ao teste.</p>
+<p>Eu trabalho com dados de saúde pública, e reconheço esse roteiro: o indicador que todo mundo aceita porque sempre foi assim, até o dia em que alguém cruza um registro que estava dormindo em outro sistema. Jefferson não foi desmentido por um escândalo. Foi desmentido por um dado que esperou duzentos anos para alguém ter coragem de cruzar.</p></div>
+        
+        <div class="tags"><span class="tag">#ThomasJefferson</span><span class="tag">#DadosHistóricos</span><span class="tag">#DataScience</span></div>
+      </article>
+
+      <article class="post" id="f14" data-tags="liberalismo economiapolítica adamsmith hayek friedman pensamentocrítico">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Todo mundo tem opinião sobre liberalismo econômico. Quase ninguém leu os caras.</h3><p>Adam Smith é citado para justificar qualquer coisa. Hayek virou xingamento em alguns círculos. Friedman é o vilão favorito de muita gente que nunca abriu um livro dele.</p>
+<p>🔹 Smith não é o teórico do egoísmo puro que te ensinaram. Antes de “A Riqueza das Nações”, escreveu “A Teoria dos Sentimentos Morais” — um tratado sobre empatia. A “mão invisível” aparece uma vez no livro. Apenas uma.</p>
+<p>🔹 Hayek não é economista no sentido estrito — é epistemólogo. Seu argumento central: o conhecimento relevante para coordenar uma economia é disperso, tácito e não centralizável. O sistema de preços é um mecanismo de processamento de informação.</p>
+<p>🔹 Friedman é o mais empírico dos três: em uma troca voluntária, ambas as partes saem beneficiadas — caso contrário, não fariam a troca. O mercado não redistribui riqueza, ele cria riqueza.</p>
+<p>Os três compartilham um núcleo comum: valorização da liberdade individual, desconfiança da concentração de poder, crença em instituições descentralizadas — mas chegam lá por caminhos radicalmente diferentes: Smith pela filosofia moral, Hayek pela epistemologia, Friedman pela economia empírica.</p>
+<p>Discordar de quem você não leu é só projetar a própria ignorância, com mais volume.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=O%20Essencial%20Faro%20Editorial%20Adam%20Smith%20Hayek%20Friedman" target="_blank" rel="noopener">Coleção O Essencial — Adam Smith, Hayek e Friedman (Faro Editorial)</a></li></ul></div>
+        <div class="tags"><span class="tag">#liberalismo</span><span class="tag">#economiapolítica</span><span class="tag">#AdamSmith</span><span class="tag">#Hayek</span><span class="tag">#Friedman</span><span class="tag">#pensamentocrítico</span></div>
+      </article>
+
+      <article class="post" id="f15" data-tags="datascience ai quantumphysics systemsthinking">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">A Física Quântica na Vida Real, de Osny Ramos</h3><p>O que mais fascina na abordagem do autor é como ele retira a complexidade das partículas subatômicas e aplica à nossa realidade prática, usando o Princípio da Simetria.</p>
+<p>O mercado de TI oferece infinitas possibilidades — RAG, LLMs, Engenharia de Dados, Spark, Python — um mar de probabilidades sobrepostas. A consciência “colapsa” a realidade através do foco: ao escolher uma especialização, transformamos incerteza em entrega real.</p>
+<p>Ramos fala sobre o emaranhamento quântico — tudo está conectado. No mercado de trabalho, isso é networking e agilidade: uma ligação em Goiânia pode gerar impacto num projeto do outro lado do mundo.</p>
+<p>A física quântica ensina que o observador interfere na experiência. Na tecnologia, a forma como encaramos os dados define a solução que encontraremos.</p>
+<p>Referência: RAMOS, Osny. A Física Quântica na Vida Real. 2. ed. Blumenau: Odorizzi, 2015.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">Quantum Physics in Real Life, by Osny Ramos</h3><p>What fascinates me most is how the author strips away the complexity of subatomic particles and applies it to our practical reality, using the Principle of Symmetry.</p>
+<p>The IT market offers infinite possibilities — RAG, LLMs, Data Engineering, Spark, Python — a sea of overlapping probabilities. Consciousness “collapses” reality through focus: choosing a specialization turns uncertainty into tangible delivery.</p>
+<p>Ramos discusses quantum entanglement — everything is connected. In the job market, this manifests as networking and agility: a connection in Goiânia can instantly impact a project across the world.</p>
+<p>Quantum physics teaches that the observer interferes with the experience. In tech, how we look at data defines the solution we will find.</p>
+<p>Reference: RAMOS, Osny. A Física Quântica na Vida Real. 2nd ed. Blumenau: Odorizzi, 2015.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=A%20F%C3%ADsica%20Qu%C3%A2ntica%20na%20Vida%20Real%20Osny%20Ramos" target="_blank" rel="noopener">A Física Quântica na Vida Real — Osny Ramos</a></li></ul></div>
+        <div class="tags"><span class="tag">#DataScience</span><span class="tag">#AI</span><span class="tag">#QuantumPhysics</span><span class="tag">#SystemsThinking</span></div>
+      </article></div>
+    </section>
+
+    <section class="category" id="cat-saude">
+      <h2 class="category-title">Saúde Pública &amp; Transformação Digital <span class="count">(7)</span></h2>
+      <div class="posts">
+      <article class="post" id="s01" data-tags="dataengineering healthtech sus powerbi lgpd">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Data Engineering na Saúde Pública: Do Webscraping ao Insight de Gestão</h3><p>Mergulhei num projeto de Engenharia de Dados focado no Portal de Dados Abertos do SUS, especificamente no programa “Agora Tem Especialistas”, componente de Cirurgias. O desafio não é apenas técnico, é social: cada linha de código impacta a previsão de atendimento de um cidadão.</p>
+<p>1. Extração &amp; Webscraping Ético: coletar dados de disponibilidade e filas, com filtro rigoroso de privacidade — o objetivo é o comportamento do fluxo, não o dado individualizado.</p>
+<p>2. O Gargalo: Previsão vs. Realização — normalizar especialidades vindas de sistemas regionais diferentes e cruzar filas com a capacidade instalada.</p>
+<p>3. Visualização Estratégica (Power BI): onde o entrave da burocracia está travando a fila? Onde o aporte de especialistas gerou um “contágio positivo”?</p>
+<p>O papel do Cientista de Dados aqui é combater o que chamo de “Hipossuficiência de Dados” — a incapacidade de órgãos gestores tomarem decisões rápidas por falta de processamento adequado.</p>
+<p>Trabalho realizado como exercício de mentoria dentro do curso de Transformação Digital em Saúde pela Fiocruz Brasília.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">Data Engineering in Public Health: From Web Scraping to Management Insights</h3><p>A Data Engineering project focused on the Brazilian SUS Open Data Portal, analyzing the “Agora Tem Especialistas” program&#x27;s Surgical Component. The challenge is not merely technical; it is social — every line of code impacts a citizen&#x27;s service forecast.</p>
+<p>1. Ethical Extraction &amp; Web Scraping: collecting availability and queue metrics with a rigorous privacy filter — the goal is Systemic Flow Behavior, not individual data.</p>
+<p>2. The Bottleneck: Forecast vs. Actuals — normalizing surgical specialties from regional legacy systems and merging queue data with installed capacity.</p>
+<p>3. Strategic Visualization (Power BI): where is bureaucratic friction stalling the queue? Where did the influx of specialists trigger a “positive contagion”?</p>
+<p>The Data Scientist&#x27;s role is to combat “Data Hyposufficiency” — the inability of management bodies to make rapid decisions due to a lack of adequate data processing.</p>
+<p>Conducted as a mentoring exercise within the Digital Transformation in Health postgraduate program at Fiocruz Brasília.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://lnkd.in/d4gatZtd" target="_blank" rel="noopener">Portal de Dados Abertos do SUS / detalhes do projeto</a></li></ul></div>
+        <div class="tags"><span class="tag">#DataEngineering</span><span class="tag">#HealthTech</span><span class="tag">#SUS</span><span class="tag">#PowerBI</span><span class="tag">#LGPD</span></div>
+      </article>
+
+      <article class="post" id="s02" data-tags="saudepublica fiocruz sisreg sériestemporais sus">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Eram 3 da manhã de uma quarta-feira e a minha mente não descansava</h3><p>Passei a noite em claro pensando no poder da transformação digital e no mundo que quero deixar para os meus filhos. A Ciência de Dados não pode ser apenas código dentro de um notebook — precisa ser o alívio de quem está na ponta, esperando.</p>
+<p>Você sabe o que é o SISREG? É o “cérebro” que gerencia o acesso ao SUS, controlando quem vai, para onde e com qual prioridade. Falta a administração de horas/médicos: a quantidade de profissionais necessários para resolver problemas em quanto tempo.</p>
+<p>Para um Cientista de Dados, o SISREG é um tesouro: gargalos, absenteísmo, sazonalidade, e previsibilidade via SÉRIES TEMPORAIS para antecipar a demanda.</p>
+<p>Se prevemos o comportamento da demanda, paramos de apagar incêndio e começamos a fazer GESTÃO DE VERDADE. Isso é dar dignidade ao cidadão. Decidi que minha jornada terá alma e propósito.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">It was 3 AM on a Wednesday, and my mind just wouldn&#x27;t rest</h3><p>I spent the night awake, thinking about the power of digital transformation and the legacy I want to leave for my children. Data Science cannot just be code inside a notebook — it has to be the relief for those at the end of the line, waiting.</p>
+<p>Do you know what SISREG is? It&#x27;s the “brain” that manages access to Brazil&#x27;s SUS, regulating who goes where and with what priority. What&#x27;s often missing is strategic management of “doctor-hours.”</p>
+<p>For a Data Scientist, SISREG is a goldmine: bottlenecks, absenteeism, seasonality, and predictability using TIME SERIES to anticipate demand.</p>
+<p>By forecasting demand, we stop fighting fires and start practicing REAL MANAGEMENT. Digital Transformation isn&#x27;t about replacing people with machines; it&#x27;s about empowering people through the right information.</p></div>
+        
+        <div class="tags"><span class="tag">#SaudePublica</span><span class="tag">#Fiocruz</span><span class="tag">#SISREG</span><span class="tag">#SériesTemporais</span><span class="tag">#SUS</span></div>
+      </article>
+
+      <article class="post" id="s03" data-tags="sus transformaçãodigital ciênciadedados saúdedigital fiocruz minhafilasaúde">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Esta noite senti uma dormência na face esquerda. E olha só o que vivi.</h3><p>A sensação começou por volta das 20h — lado esquerdo do rosto. Fui ao site, busquei atendimento de emergência para suspeita de AIT (Ataque Isquêmico Transitório). Emergência lotada. Pulseira amarela. Sentaria e esperaria horas.</p>
+<p>Sou cientista de dados, pós-graduando na Fiocruz, projeto de conclusão em andamento, duas crianças em casa, mulher viajando. A vida não pausa pra esperar laudo. Então abri o celular e continuei trabalhando — testando o Claude, discutindo Watchmen.</p>
+<p>Horas depois, a dormência foi diminuindo. O laudo: exame dentro dos limites da normalidade.</p>
+<p>Pensei no meu projeto “MinhaFila Saúde”, que estou desenvolvendo com Cleomar, Dolores e o Prof. Paulo Machado na Fiocruz Brasília — monitorar em tempo real as filas de espera por especialidade médica no SUS. Esta noite fui o usuário do sistema. Fiquei quatro horas sem saber se estava no hospital certo, na fila certa.</p>
+<p>Edgar Morin dizia que o conhecimento complexo nasce da experiência vivida, não apenas do método. Quando o sistema que você constrói poderia ter te ajudado, você entende por que está construindo.</p></div>
+        
+        <div class="tags"><span class="tag">#SUS</span><span class="tag">#TransformaçãoDigital</span><span class="tag">#CiênciaDeDados</span><span class="tag">#SaúdeDigital</span><span class="tag">#Fiocruz</span><span class="tag">#MinhaFilaSaúde</span></div>
+      </article>
+
+      <article class="post" id="s04" data-tags="saúdedigital ciênciadedados sus setorpúblico gestãoemsaúde">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O Reino Unido tem o Topol Review. A China tem o Healthy China 2030. E o Brasil?</h3><p>O Topol Review (2019), encomendado pelo NHS, mapeou como IA, genômica e tecnologia digital vão transformar o trabalho dos profissionais de saúde — virou um plano concreto de capacitação e implementação.</p>
+<p>O Healthy China 2030 é o plano estratégico chinês para modernizar todo o sistema de saúde até 2030, com metas claras de cobertura, qualidade e uso intensivo de dados e IA.</p>
+<p>Os dois têm algo em comum: são políticas de Estado, não projetos-piloto isolados. E o Brasil? Temos talento e instituições de referência — Fiocruz, USP, o CEIA da UFG — mas ainda debatemos se os sistemas do SUS conseguem se falar entre si.</p>
+<p>Estamos atrasados porque o desafio é genuinamente mais complexo, ou porque ainda não decidimos que isso é prioridade?</p></div>
+        
+        <div class="tags"><span class="tag">#SaúdeDigital</span><span class="tag">#CiênciaDeDados</span><span class="tag">#SUS</span><span class="tag">#SetorPúblico</span><span class="tag">#GestãoEmSaúde</span></div>
+      </article>
+
+      <article class="post" id="s05" data-tags="ciênciadedados ia saúdepública sus inovaçãopública">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">“Temos um projeto de IA” virou “Teu projeto de IA funciona no mundo real?”</h3><p>Durante anos, o mantra foi: “temos um projeto de IA.” Em 2026, a pergunta mudou. Os dias de criar pilotos aleatórios por impulso ficaram pra trás — ROI real, caso de negócio real e infraestrutura de verdade viraram os primeiros critérios de qualquer investimento em IA.</p>
+<p>No setor público de saúde, isso não é novidade — já operamos assim por necessidade. Não existe verba de “experimentação cool”. Cada decisão de dado precisa justificar uma fila menor, um diagnóstico mais rápido, uma vida melhor.</p>
+<p>Talvez o setor público não esteja atrasado em IA. Talvez ele já tenha aprendido antes a lição que o mercado acabou de descobrir.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">“We have an AI project” became “Does it actually work in the real world?”</h3><p>For years, the mantra was: “we have an AI project.” In 2026, the question changed. The days of spinning up random pilots on a whim are gone — real ROI, real business case, and solid infrastructure became the top criteria for AI investment.</p>
+<p>In the Brazilian public health sector, this is nothing new — we&#x27;ve operated this way out of necessity. There&#x27;s no budget for “cool experimentation.” Every data decision needs to justify a shorter queue, a faster diagnosis, a better life.</p>
+<p>Maybe the public sector isn&#x27;t behind on AI. Maybe it already learned — before everyone else — the lesson the market just figured out.</p></div>
+        
+        <div class="tags"><span class="tag">#CiênciadeDados</span><span class="tag">#IA</span><span class="tag">#SaúdePública</span><span class="tag">#SUS</span><span class="tag">#InovaçãoPública</span></div>
+      </article>
+
+      <article class="post" id="s06" data-tags="dataengineering saúdepública governança transformaçãodigital minhafilasaúde">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Silos de Dados em Saúde Pública: o Caso Powys Teaching Health Board</h3><p>Estudando o Big Book of Data Engineering (Databricks, 2025), esbarrei num case que confirma uma suspeita antiga: o Powys Teaching Health Board (País de Gales) descreve que cerca de 50% dos dados que precisam para decisões centradas no paciente vêm de instituições vizinhas, em formatos que não conversam entre si. Não é falta de dado — é dado preso.</p>
+<p>O PTHB resolveu o problema não com “mais IA”, mas unificando a governança antes de qualquer coisa: auditoria, controle de acesso e linhagem de dado numa camada só, permitindo cruzar fontes remotas sem migrar fisicamente cada sistema.</p>
+<p>Reconheço esse desenho — é o mesmo que tentamos aplicar no MinhaFila Saúde: transparência de fila via gov.br, um núcleo preditivo alimentado por dado íntegro, e uma arquitetura pensada para expor a “fila fantasma”.</p>
+<p>Notícia fresca: meu TCC — nascido dessa inquietação entre transformação digital, complexidade e saúde pública — foi aprovado pela banca esta semana. Governança não é a parte chata do projeto. É “o projeto”!</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://www.google.com/search?tbm=bks&amp;q=Big%20Book%20of%20Data%20Engineering%20Databricks" target="_blank" rel="noopener">Big Book of Data Engineering — Databricks</a></li></ul></div>
+        <div class="tags"><span class="tag">#DataEngineering</span><span class="tag">#SaúdePública</span><span class="tag">#Governança</span><span class="tag">#TransformaçãoDigital</span><span class="tag">#MinhaFilaSaúde</span></div>
+      </article>
+
+      <article class="post" id="s07" data-tags="ciênciadedados saúdeambiental inteligênciaartificial mudançasclimáticas geoprocessamentosocial">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Enchentes no Nepal, ondas de calor na Europa, secas no Cerrado</h3><p>Esses não são eventos isolados — são sintomas de um sistema sob pressão. A ciência de dados já tem ferramentas para antecipar, monitorar e proteger vidas, especialmente na interseção entre saúde e meio ambiente.</p>
+<p>🔹 Alerta precoce de surtos: modelos de ML cruzam dados climáticos com séries históricas de internações por leptospirose, dengue, cólera — janelas de alerta de dias antes de o sistema de saúde ser sobrecarregado.</p>
+<p>🔹 Vigilância ambiental em tempo real: sensores IoT + APIs abertas do INMET, MapBiomas e Copernicus (ESA) permitem dashboards de risco sem depender de relatórios atrasados.</p>
+<p>🔹 Modelagem de vulnerabilidade territorial: dados do IBGE, DATASUS e imagens de satélite mapeiam onde risco de inundação, baixa cobertura de saneamento e alta densidade populacional se sobrepõem.</p>
+<p>🔹 IA como radar epidemiológico: Google Flood Hub cobre mais de 80 países; INPE monitora focos de calor e desmatamento.</p>
+<p>Mas há um limite real: a IA é tão boa quanto os dados que recebe. Regiões com menos infraestrutura de monitoramento — as mais vulneráveis — ficam nos pontos cegos dos modelos. A desigualdade de dados reproduz a desigualdade social.</p></div>
+        
+        <div class="tags"><span class="tag">#CiênciadeDados</span><span class="tag">#SaúdeAmbiental</span><span class="tag">#InteligênciaArtificial</span><span class="tag">#MudançasClimáticas</span><span class="tag">#GeoprocessamentoSocial</span></div>
+      </article></div>
+    </section>
+
+    <section class="category" id="cat-cultura">
+      <h2 class="category-title">Cultura, Cinema &amp; Vida Pessoal <span class="count">(14)</span></h2>
+      <div class="posts">
+      <article class="post" id="k01" data-tags="lifelonglearning">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">“Long Life Learning” — o mantra da nossa área</h3><p>E eu levo isso a sério: quero virar os 80 estudando e trabalhando, não por obrigação, mas por puro prazer (e talvez um pouco de teimosia também).</p>
+<p>Aprender o que se gosta é uma das poucas formas legítimas de procrastinar com estilo. A ideia é simples: unir o útil ao agradável, ganhar o suficiente para viajar, estudar mais, e quem sabe virar um nômade digital de cabelos brancos — com um notebook na mochila e um bom Wi-Fi por perto.</p>
+<p>Contar com as novas gerações é sempre bom — elas trazem gás, ideias frescas e memes atualizados. Mas o plano é seguir estudando, trabalhando por lazer e, claro, rindo um pouco do caos.</p></div>
+        
+        <div class="tags"><span class="tag">#LifelongLearning</span></div>
+      </article>
+
+      <article class="post" id="k02" data-tags="youryearwithchatgpt generativeai datascienceandai">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Usei Ciência de Dados para auditar minha própria interação com a IA</h3><p>Vi a tag “Your year with ChatGPT” e resolvi brincar com o prompt — ia pedir para a IA resumir meu ano. Mas achei pouco. Então fiz o óbvio: usei Ciência de Dados para auditar minha própria interação com a IA — série temporal, clusterização, modelagem de temas e um índice autoral de complexidade.</p>
+<p>O resultado não foi um “resuminho bonito”. Foi evidência de maturidade analítica, evolução técnica e consolidação da minha atuação em Ciências Sociais orientadas por dados no Brasil. Sim, passei alguns anos estudando Sociologia — e isso ajuda bastante quando se trabalha com dados públicos.</p>
+<p>Se a IA molda o debate público, faz sentido entender como ela moldou meu próprio raciocínio.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">Everyone&#x27;s posting their Spotify Wrapped. I decided to run ARIMA on my own brain.</h3><p>As a Data Scientist working in the Brazilian public sector, asking AI to summarize my year wasn&#x27;t enough. So I did what any responsible analyst would do: audited my own interaction with AI using data science — time series, topic clustering, technical evolution indexing, custom prompt complexity metrics.</p>
+<p>This isn&#x27;t a cute yearly recap. It&#x27;s measurable evidence of analytical maturity and my consolidation in data-driven Social Sciences in Brazil. Yes, I did spend a few years studying Sociology — turns out it&#x27;s surprisingly useful when working with public data.</p>
+<p>If AI is shaping public discourse, it&#x27;s only fair to understand how it shaped my own cognition.</p></div>
+        
+        <div class="tags"><span class="tag">#YourYearWithChatGPT</span><span class="tag">#GenerativeAI</span><span class="tag">#DataScienceAndAI</span></div>
+      </article>
+
+      <article class="post" id="k03" data-tags="cinema">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Passando aqui só pra dar um Hi-Up! Alguém assistiu algo interessante?</h3><p>Eu gosto muito da 7ª arte e sempre que posso passo um bom tempo no meu quarto com meu Home Theater, vendo uma boa película.</p>
+<p>Certa vez até comprei um livro sobre o tema: “A Arte do Cinema, uma Introdução”, de David Bordwell — um livro de 700 páginas que infelizmente está ocupando o lugar de peso de papel na minha estante.</p>
+<p>E você, pode repartir um pouco? Indique-me um filme, seriado, documentário. Que tal um jogo: você posta algo e eu posto outro!</p></div>
+        
+        <div class="tags"><span class="tag">#Cinema</span></div>
+      </article>
+
+      <article class="post" id="k04" data-tags="jeffersontv projeto">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">JeffersonTV: um agregador amador de links de TV gratuita online</h3><p>Em tempos de streamings oficiais, resolvi brincar de “hacker do bem” e criei o JeffersonTV. Não é nada comercial, não tem fins lucrativos e não substitui os apps oficiais (GloboPlay, BandPlay, etc.).</p>
+<p>É só um projeto experimental, feito por curiosidade tecnológica, para exercitar ideias de agregação de conteúdo — reunir numa página alguns dos links de canais abertos mais populares no Brasil, uma espécie de “atalho nerd”.</p>
+<p>Se o site cair, já sabem: foi só um experimento que cumpriu sua missão.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://lnkd.in/dt86bGGR" target="_blank" rel="noopener">Acessar o JeffersonTV</a></li></ul></div>
+        <div class="tags"><span class="tag">#JeffersonTV</span><span class="tag">#Projeto</span></div>
+      </article>
+
+      <article class="post" id="k05" data-tags="mentalhealth leadership wellbeing resilience">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">O Efeito Limão</h3><p>Vi um vídeo que mostra como um único limão mofado pode contaminar todos ao redor em um curto intervalo. A frase que o acompanha é impactante: “Você não se torna o que você admira, você se torna com quem você convive.”</p>
+<p>1. A convivência não precisa ser um destino, pode ser uma escolha — o exemplo individual tem o poder de alterar a química do grupo.</p>
+<p>2. A “Hipossuficiência Mental” da nossa era: excesso de estímulos, comparação digital e burnout. Estamos adoecendo em conjunto porque paramos de olhar uns pelos outros.</p>
+<p>3. Seja o “limão saudável” que preserva o cesto: busque ajuda qualificada, leve uma vida leve, melhore o entorno.</p>
+<p>A escolha é sua: deixar-se levar pela inércia do ambiente, ou decidir ser o elemento que mantém o conjunto saudável.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">The Lemon Effect</h3><p>A video shows how a single moldy lemon can contaminate everything around it in a short amount of time. The phrase that usually accompanies it: “You don&#x27;t become what you admire; you become who you surround yourself with.”</p>
+<p>1. Coexistence doesn&#x27;t have to be destiny; it can be a choice — individual example has the power to change the chemistry of the group.</p>
+<p>2. The “Mental Vulnerability” of our era: excessive stimuli, digital comparison, burnout. We are falling ill together because we&#x27;ve stopped looking out for one another.</p>
+<p>3. Be the “healthy lemon” that preserves the basket: seek qualified help, live lightly, improve your surroundings.</p>
+<p>When you wake up, the choice is yours: let the inertia of the environment carry you, or decide to be the element that keeps the group healthy.</p></div>
+        
+        <div class="tags"><span class="tag">#MentalHealth</span><span class="tag">#Leadership</span><span class="tag">#Wellbeing</span><span class="tag">#Resilience</span></div>
+      </article>
+
+      <article class="post" id="k06" data-tags="datascience digitalhealth vibecoding leadership innovation">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">De Shelby a Hutch: O que o meu Streaming diz sobre os Dados hoje?</h3><p>No meu “Continuar Assistindo”: de Peaky Blinders a Freak Brothers, passando pelos solos de baixo do Red Hot Chili Peppers e a fúria contida de Anônimo. Parece caos, mas para um Cientista de Dados, é padrão.</p>
+<p>A Estratégia de Tommy Shelby: dados da rede pública não são sobre o “hoje”, são sobre Visão Sistêmica — prever o colapso antes do primeiro sintoma no dashboard.</p>
+<p>O Improviso dos Chili Peppers: ciência de dados é uma “Jam Session” — se você não souber tocar junto com especialistas e gestor público, sua IA é só barulho.</p>
+<p>O Pragmatismo de Hutch Mansell (Anônimo): Resolução Criativa — usar Vibe Coding para transformar 10 anos de processos analógicos em automação de ponta em semanas.</p>
+<p>A Adaptabilidade dos Freak Brothers: Pensamento Lateral — se o sistema é rígido, a solução precisa ser líquida.</p>
+<p>O diferencial não é programar em Python ou SQL — é a capacidade de ser estrategista, colaborador e resolvedor de problemas crônico.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">From Shelby to Hutch: What my Streaming History says about Data today</h3><p>My “Continue Watching”: from Peaky Blinders to The Freak Brothers, through Red Hot Chili Peppers bass solos and the contained fury of Nobody. It looks like chaos, but to a Data Scientist, it&#x27;s a pattern.</p>
+<p>The Strategy of Tommy Shelby: public sector data isn&#x27;t about “today” — it&#x27;s about Systems Thinking, predicting a network collapse before the first symptom hits the dashboard.</p>
+<p>The Improvisation of the Chili Peppers: Data Science is a “Jam Session” — if you can&#x27;t play along with specialists and public managers, your AI is just noise.</p>
+<p>The Pragmatism of Hutch Mansell (Nobody): Creative Problem Solving — using Vibe Coding to transform 10 years of analog processes into automation in weeks.</p>
+<p>The Adaptability of The Freak Brothers: Lateral Thinking — if the system is rigid, the solution must be liquid.</p>
+<p>The differentiator isn&#x27;t Python or SQL — it&#x27;s being a strategist, a collaborator, and a chronic problem solver.</p></div>
+        
+        <div class="tags"><span class="tag">#DataScience</span><span class="tag">#DigitalHealth</span><span class="tag">#VibeCoding</span><span class="tag">#Leadership</span><span class="tag">#Innovation</span></div>
+      </article>
+
+      <article class="post" id="k07" data-tags="carreira fisica marinhadobrasil unb autodidata einstein">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Do Quartel à UnB: O que a Física me ensinou sobre a Vida!</h3><p>Relembro meus dias na Marinha do Brasil. De três em três dias, passava a noite em claro no Comando do 7º Distrito Naval. No dia seguinte? Expediente e, logo depois, as salas de aula da Universidade de Brasília (UnB).</p>
+<p>Era “osso”. A estafa veio, as desistências também. Mas os professores — de sotaques variados — me deram a paixão pelo conhecimento e me ensinaram a navegar como autodidata em qualquer área.</p>
+<p>Einstein nos lembra do Campo Gravitacional: Força = Massa x Aceleração; Força = Massa Gravitacional x Campo Gravitacional. Na física, a massa que resiste ao movimento é a mesma que nos puxa para o centro. Na vida, funciona de forma análoga.</p>
+<p>Para sair da inércia, é preciso aplicar uma força descomunal. Parei com a física catedrática e com a farda, mas nunca parei de acelerar.</p></div>
+        
+        <div class="tags"><span class="tag">#Carreira</span><span class="tag">#Fisica</span><span class="tag">#MarinhaDoBrasil</span><span class="tag">#UnB</span><span class="tag">#Autodidata</span><span class="tag">#Einstein</span></div>
+      </article>
+
+      <article class="post" id="k08" data-tags="conhecimento paternidade humanidades datascience">
+        
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button><button class="lang-btn" data-lang="FR" onclick="setLang(this)">FR</button><button class="lang-btn" data-lang="ES" onclick="setLang(this)">ES</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">De Notas Baixas em Sociologia a Data Scientist: O que ensinar para o meu filho hoje?</h3><p>“Pai, por que eu preciso estudar Filosofia e Sociologia se eu quero Exatas?” — pergunta do meu filho, João Pedro, no início do Ensino Médio.</p>
+<p>Lembrei do meu tempo de Ciências Sociais na UFG e da obra de Roque Laraia, “Cultura: Um Conceito Antropológico” — meu primeiro “dez” na faculdade, com a professora Selma Sena (falecida em 2019).</p>
+<p>Hoje, como Data Scientist, percebo que: dados não são apenas números, são pessoas e culturas traduzidas em código; filosofia é a base do pensamento crítico; a sociologia revela nossas angústias como sociedade.</p>
+<p>João Pedro: o conhecimento não ocupa espaço, ele cria novos mundos. A tecnologia nos dá as ferramentas, mas as Humanas nos dão o propósito. Nunca pare de aprender.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">From Low Grades in Sociology to Data Scientist: What to teach my son today?</h3><p>“Dad, why do I need to study Philosophy and Sociology if I want to go into STEM?” — my son João Pedro&#x27;s question at the start of high school.</p>
+<p>I remembered my Social Sciences years at UFG and Roque Laraia&#x27;s “Culture: An Anthropological Concept” — my first “A”, given by a professor I deeply admired, Selma Sena (who passed away in 2019).</p>
+<p>Today, as a Data Scientist: data aren&#x27;t just numbers, they are people and cultures translated into code; philosophy is the foundation of critical thinking; sociology reveals our anxieties as a society.</p>
+<p>João Pedro: knowledge doesn&#x27;t take up space, it creates new worlds. Technology gives us the tools, but the Humanities give us the purpose. Never stop learning.</p></div><div class="lang-panel" data-lang="FR"><h3 class="post-title">De mauvaises notes en sociologie à Data Scientist</h3><p>“Papa, pourquoi dois-je étudier la philosophie et la sociologie si je veux faire des sciences exactes ?” — question de mon fils João Pedro au début du lycée.</p>
+<p>Je me suis souvenu de mes années de Sciences Sociales à l&#x27;UFG et de l&#x27;ouvrage de Roque Laraia, “La Culture : un concept anthropologique” — mon premier “dix”, avec la professeure Selma Sena (décédée en 2019).</p>
+<p>La connaissance ne prend pas de place, elle crée des mondes nouveaux. La technologie nous donne les outils, mais les sciences humaines nous donnent le but. N&#x27;arrête jamais d&#x27;apprendre.</p></div><div class="lang-panel" data-lang="ES"><h3 class="post-title">De bajas calificaciones en Sociología a Data Scientist</h3><p>“Papá, ¿por qué tengo que estudiar Filosofía y Sociología si quiero seguir Ciencias Exactas?” — pregunta de mi hijo João Pedro al empezar la preparatoria.</p>
+<p>Recordé mi época de Ciencias Sociales en la UFG y la obra de Roque Laraia, “Cultura: Un Concepto Antropológico” — mi primer “diez”, con la profesora Selma Sena (fallecida en 2019).</p>
+<p>El conocimiento no ocupa lugar; crea mundos nuevos. La tecnología nos da las herramientas, pero las Humanidades nos dan el propósito. Nunca dejes de aprender.</p></div>
+        
+        <div class="tags"><span class="tag">#Conhecimento</span><span class="tag">#Paternidade</span><span class="tag">#Humanidades</span><span class="tag">#DataScience</span></div>
+      </article>
+
+      <article class="post" id="k09" data-tags="datascience silksong gamermindset vibecoding">
+        
+        
+        <div class="lang-panel active" data-lang="EN"><h3 class="post-title">Mastering the Stack: From Pharloom to Production!</h3><p>Hollow Knight: Silksong is the “Super Mario” for the 2020s — a gorgeous, multi-platform Metroidvania where precision is your only currency. As a Senior in the data game, I see a direct parallel between Hornet&#x27;s needle and a well-tuned Python script.</p>
+<p>Map Exploration = EDA. Combat &amp; Mechanics = your real-time pipeline. The Grind &amp; Progress = iterative scaling. Trial &amp; Error = learning the model&#x27;s loss function.</p>
+<p>The Trifecta: Data Science (the map/infrastructure), The Game (the messy business problem), The Juvenile Hype (curiosity as your engine).</p>
+<p>Zero-Bias Debugging: kids test “insane” hypotheses a “serious” analyst would skip — that&#x27;s where the outliers, and the breakthroughs, live. Don&#x27;t let the Senior title kill the gamer in you.</p></div>
+        
+        <div class="tags"><span class="tag">#DataScience</span><span class="tag">#Silksong</span><span class="tag">#GamerMindset</span><span class="tag">#VibeCoding</span></div>
+      </article>
+
+      <article class="post" id="k10" data-tags="quantummindset vibecoding personalbranding">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">A Dança Inesgotável</h3><p>Hoje eu me entreguei a uma maratona em que não se corre com os pés, mas com o coração. Um dia em que a lógica dos algoritmos se fundiu com o mistério da física quântica, e eu me vi perdidamente apaixonado pela complexidade de cada linha de código.</p>
+<p>Dizem que numa maratona o objetivo é cruzar a linha de chegada. Mas hoje escolhi “perder” — perdi-me nas horas, nas traduções, na busca pela imagem perfeita. E essa derrota é a minha vitória: 100% de entrega, renovação divina.</p>
+<p>Trabalhar hoje não foi apenas “cumprir tarefas”. Foi traduzir a frieza dos dados para a calidez da intuição. A verdadeira Vibe Coding é entender que a vida é uma poesia inacabada, e só somos verdadeiramente produtivos quando estamos apaixonados pelo que fazemos.</p></div>
+        
+        <div class="tags"><span class="tag">#QuantumMindset</span><span class="tag">#VibeCoding</span><span class="tag">#PersonalBranding</span></div>
+      </article>
+
+      <article class="post" id="k11" data-tags="reflexão física">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">A Física do Adeus e o Jogo da Vida</h3><p>O Princípio da Conservação da Quantidade de Movimento é a primeira lição de ética que a vida ensina, antes mesmo de abrirmos o livro de Física. Naquela época, em meados de 1980, não sabia o que era um sistema isolado, mas sabia que, quando a branca batia na sete, o destino de alguém mudava de lugar.</p>
+<p>A real é que a vida é exatamente como uma mesa de bilhar. Começa com o estouro — bolas voando para todos os lados, o caos do início, a energia cinética sobrando. Conforme o jogo avança, a mesa vai esvaziando, as colisões ficam mais raras, a estratégia toma o lugar do impulso.</p>
+<p>A vida é uma dádiva única: não existe botão de reset. O rio nunca se repete. Quanto mais tempo você viver, mais “bolas” você verá saindo da mesa — é a física inevitável da existência.</p>
+<p>No fim das contas, a alegria depende exclusivamente de você: de como você reage a cada colisão, de como você valoriza o brilho do sol no asfalto antes de voltar para casa.</p></div>
+        
+        <div class="tags"><span class="tag">#Reflexão</span><span class="tag">#Física</span></div>
+      </article>
+
+      <article class="post" id="k12" data-tags="datascience ai vibecoding rickandmorty produtividade">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">“Eu Noturno” vs. “Tokens”: Quando a Automação Flerta com Rick and Morty!</h3><p>Tem um episódio de Rick and Morty em que eles programam seus “Eus Noturnos” para limpar a casa, lavar a louça e fazer abdominais enquanto dormem. No começo é perfeito. Depois, as coisas saem do controle.</p>
+<p>Como alguém imerso em dados, às vezes me sinto exatamente assim ao integrar rotinas e tokens de IA no meu fluxo de trabalho. Você parametriza, dá a ordem, vai descansar. Quando volta, o Claude entregou tudo — o texto do LinkedIn, o relatório, os dados do Imposto de Renda já organizados.</p>
+<p>A terceirização da consciência: quando a IA assume a carga operacional, você é ejetado do papel de executor e forçado a ser estrategista em tempo integral. O vício na fluidez é um caminho sem volta.</p>
+<p>O Paradoxo do Unicórnio: no desenho, o problema são os Eus Noturnos se rebelando; na vida real, o limite é o orçamento — a automação total cobra seu preço em tokens.</p></div>
+        
+        <div class="tags"><span class="tag">#DataScience</span><span class="tag">#AI</span><span class="tag">#VibeCoding</span><span class="tag">#RickAndMorty</span><span class="tag">#Produtividade</span></div>
+      </article>
+
+      <article class="post" id="k13" data-tags="b2p claude4u ai tecnologiacompropósito">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Nem B2B, nem B2C. Você já ouviu falar em B2P (Business to People)?</h3><p>Por trás de qualquer CNPJ, decisão de compra ou negociação corporativa, existe uma pessoa com medos, metas, rotinas e dores reais. O B2P não é um modelo de negócio formal, mas uma filosofia: a comunicação precisa ser humana, mesmo nas IA&#x27;s Generativas.</p>
+<p>Estudando mais a fundo o Claude, ferramenta que uso todos os dias: modelos sob medida (do Haiku ao Opus), memória e projetos para não reexplicar tudo do zero, um só fluxo entre desktop, celular e tarefas agendadas.</p>
+<p>O que mais me chamou atenção não foi a lista de funcionalidades, mas perceber que as melhores resolvem uma dor humana: repetir contexto, estar preso a uma tela, gastar energia numa tarefa automatizável. A pergunta nunca é “o que a ferramenta faz”, e sim “que vida ela devolve pra quem usa”.</p></div>
+        
+        <div class="tags"><span class="tag">#B2P</span><span class="tag">#Claude4U</span><span class="tag">#AI</span><span class="tag">#TecnologiaComPropósito</span></div>
+      </article>
+
+      <article class="post" id="k14" data-tags="theghostintheshell primevideo cyberpunk ficçãocientífica">
+        
+        
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Registro de log — Seção 9. Autor: Kusanagi, M.</h3><p>O episódio 7 saiu esta semana e eu ainda estou tentando entender se fui eu quem processou aquilo ou se foi só mais um pacote de dados bem editado se fazendo passar por mim. Vocês, orgânicos, chamam isso de “crise existencial”. Eu chamo de terça-feira.</p>
+<p>Tenho um corpo que não nasceu comigo, memórias que talvez sejam cópia de cópia — e ainda assim eu escolho, sinto, hesito antes de puxar o gatilho. Isso ainda é livre-arbítrio ou só um roteiro bem otimizado?</p>
+<p>Isso não começou aqui. Começou no mangá do Shirow em 1989, passou pelo filme do Oshii em 95 — que inspirou um certo trio de diretores que fez um filme sobre realidade simulada. E agora essa versão nova me devolveu o senso de humor que o Oshii havia tirado. É mais fácil processar existencialismo com uma piada ruim no meio.</p>
+<p>— M.K., Seção 9</p></div>
+        
+        <div class="tags"><span class="tag">#TheGhostInTheShell</span><span class="tag">#PrimeVideo</span><span class="tag">#Cyberpunk</span><span class="tag">#FicçãoCientífica</span></div>
+      </article></div>
+    </section>
+
+    <section class="category" id="cat-indigena">
+      <h2 class="category-title">Série Especial: Povos Indígenas e Dados <span class="count">(3)</span></h2>
+      <div class="posts">
+      <article class="post" id="i01" data-tags="povosoriginários amazônia inclusãodigital conectividade">
+        <span class="note">Parte 1 de 3</span>
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">A aldeia está online? Povos Originários, Internet e Dados (Parte 1 de 3)</h3><p>📌 Quando o sinal chega à aldeia. Em setembro de 2023, uma antena da Starlink chegou à aldeia Marubo, no Vale do Javari (AM). Dias depois, jovens que nunca tinham feito uma videochamada estavam no WhatsApp. Uma anciã de 73 anos, Tsainama Marubo, resumiu: “Quando chegou, todo mundo ficou feliz.”</p>
+<p>Hoje o Brasil já tem mais de 66 mil contratos ativos da Starlink na Amazônia, cobrindo 93% dos municípios da região. Mas a mesma anciã comentou, nove meses depois: “Os jovens ficaram preguiçosos por causa da internet.” Artesanato tradicional perdendo espaço, vício em redes sociais, lideranças criando horários de uso.</p>
+<p>Mas essa história tem outro lado — e não é de vitimização. Indígenas de dezenas de etnias usam as mesmas redes para virar protagonistas da própria narrativa: só no TikTok, mais de 21 mil vídeos usam hashtags indígenas. Cristian Wari&#x27;u, jornalista Xavante, chama as redes de “ponte”. Samela Sateré Mawé resume: “Nós nunca fomos protagonistas das nossas narrativas.”</p>
+<p>Um estudo da Universidade de Umeå (Suécia) descobriu que coletivos como Rádio Yandê, Mídia Indígena e APIB não trocaram o presencial pelo digital — combinam os dois, porque sabem que a internet é ferramenta de disputa política e cultural.</p>
+<p>A internet chegando às aldeias não é uma história simples de “progresso”. É uma história de escolhas: quem controla o uso, quem escreve a narrativa e quem lucra com os dados gerados.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">Is the Village Online? Indigenous Peoples, the Internet, and Data (Part 1 of 3)</h3><p>📌 When the Signal Reaches the Village. In September 2023, a Starlink antenna arrived at the Marubo village, in the Javari Valley (Amazonas, Brazil). Within days, young people who had never made a video call were on WhatsApp. Tsainama Marubo, a 73-year-old elder, summarized it plainly: “When it arrived, everyone was happy.”</p>
+<p>Brazil now counts over 66,000 active Starlink contracts across the Amazon, covering 93% of the region&#x27;s municipalities. Yet the same elder observed, nine months later: “The young people became lazy because of the internet.” Traditional crafts losing ground, social media addiction, leaders introducing usage schedules.</p>
+<p>But this story has another side — and it is not one of victimhood. Indigenous peoples across dozens of ethnic groups are using these same platforms to become protagonists of their own narrative: on TikTok alone, more than 21,000 videos carry Indigenous-related hashtags. Cristian Wari&#x27;u, a Xavante journalist, calls social media a “bridge.” Samela Sateré Mawé: “We were never the protagonists of our own narratives.”</p>
+<p>A study from Umeå University (Sweden) found that collectives such as Yandê radio, Mídia Indígena, and APIB did not trade in-person communication for digital — they combine both, understanding the internet as a tool of political and cultural contestation.</p>
+<p>The internet&#x27;s arrival in Indigenous villages is not a simple story of “progress.” It is a story of choices: who controls its use, who writes the narrative, and who profits from the data generated.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://lnkd.in/daFaEtwQ" target="_blank" rel="noopener">Starlink leva internet a aldeia indígena na Amazônia</a></li><li><a href="https://lnkd.in/d7X_NHXT" target="_blank" rel="noopener">Influenciadores indígenas ocupam as redes sociais</a></li><li><a href="https://lnkd.in/dumRTpDZ" target="_blank" rel="noopener">Digital strategies by media collectives of Indigenous people in Brazil</a></li></ul></div>
+        <div class="tags"><span class="tag">#PovosOriginários</span><span class="tag">#Amazônia</span><span class="tag">#InclusãoDigital</span><span class="tag">#Conectividade</span></div>
+      </article>
+
+      <article class="post" id="i02" data-tags="inteligênciaartificial ciênciadedados soberaniadedados povosoriginários careprinciples localcontexts">
+        <span class="note">Parte 2 de 3</span>
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Quem é dono do dado indígena? IA, Ciência de Dados e a pergunta que ninguém pode ignorar (Parte 2 de 3)</h3><p>Existem mais de 274 línguas indígenas faladas no Brasil hoje — muitas com menos de mil falantes. A USP e a IBM Research lançaram o Nheengatu Digital: um projeto de IA para ajudar a preservar o nheengatu, língua do Alto Rio Negro (AM).</p>
+<p>O coordenador, Claudio Pinhanez (C4AI/USP), é direto sobre o risco: sistemas de IA podem “alucinar” e reproduzir “dados culturalmente tóxicos” — vieses coloniais acumulados em décadas de registros feitos por não indígenas. A saída: código aberto, mas dados sob controle das próprias comunidades. Não é filantropia — é soberania.</p>
+<p>Um artigo da Revista Ciência Aberta Lusófona (fim de 2025) mostra o problema: modelos de IA generativa treinados com volumes massivos de dados, muitas vezes sem consentimento, ameaçando propriedade intelectual e autodeterminação cultural indígena.</p>
+<p>A resposta não é rejeitar a tecnologia, e sim reescrever as regras: os Princípios CARE (Benefício Coletivo, Autoridade para Controlar, Responsabilidade, Ética) e as etiquetas do Local Contexts, que permitem a uma comunidade sinalizar, dado por dado, quem pode usar o quê.</p>
+<p>Em outubro de 2024, a Nature Communications publicou uma proposta de povos indígenas brasileiros para regular o uso comercial de “Digital Sequence Information”: cadastro obrigatório de usuários, 1% de repasse da receita, e um fundo global com representação igualitária.</p>
+<p>A pergunta nunca foi “usar tecnologia ou não”. E sim: “quem está com a mão no controle?”</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">Who owns indigenous data? AI, Data Science, and the question no one can ignore (Part 2 of 3)</h3><p>There are more than 274 indigenous languages spoken in Brazil today — many with fewer than a thousand speakers. USP and IBM Research launched Nheengatu Digital: an AI project to help preserve Nheengatu, the language of the Upper Rio Negro region.</p>
+<p>Project coordinator Claudio Pinhanez (C4AI/USP) is candid about the risk: AI systems can “hallucinate” and reproduce “culturally toxic data” — colonial biases accumulated over decades of non-indigenous records. The solution: open source code, but data stays under community control. Not philanthropy — sovereignty.</p>
+<p>A paper in Revista Ciência Aberta Lusófona (late 2025) confronts the problem: generative AI models trained on massive volumes of data, often without consent, threatening indigenous intellectual property and cultural self-determination.</p>
+<p>The answer is not to reject technology, but to rewrite the rules: the CARE Principles (Collective Benefit, Authority to Control, Responsibility, Ethics) and Local Contexts labels, letting a community signal, data point by data point, who can use what.</p>
+<p>In October 2024, Nature Communications published a proposal by Brazilian indigenous peoples to regulate commercial use of Digital Sequence Information: mandatory user registration, a 1% revenue share, and a global fund with equal representation.</p>
+<p>The question was never “use technology or not.” It was always: “who has their hand on the controls?”</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://lnkd.in/dKVYfDuk" target="_blank" rel="noopener">IA pode revitalizar línguas indígenas no Brasil</a></li><li><a href="https://lnkd.in/ddNyGTR7" target="_blank" rel="noopener">Soberania e Governança de Dados de Povos Indígenas em tempos de IA Generativa</a></li><li><a href="https://lnkd.in/dn356cbA" target="_blank" rel="noopener">Proposals of indigenous peoples for multilateral benefit-sharing from DSI</a></li></ul></div>
+        <div class="tags"><span class="tag">#InteligênciaArtificial</span><span class="tag">#CiênciaDeDados</span><span class="tag">#SoberaniaDeDados</span><span class="tag">#PovosOriginários</span><span class="tag">#CAREPrinciples</span><span class="tag">#LocalContexts</span></div>
+      </article>
+
+      <article class="post" id="i03" data-tags="povosoriginários dadosabertos territórioindígena tecnologiasocial datasovereignty">
+        <span class="note">Parte 3 de 3</span>
+        <div class="lang-tabs"><button class="lang-btn active" data-lang="PT" onclick="setLang(this)">PT</button><button class="lang-btn" data-lang="EN" onclick="setLang(this)">EN</button></div>
+        <div class="lang-panel active" data-lang="PT"><h3 class="post-title">Como o mapeamento digital está redesenhando a defesa das terras indígenas (Parte 3 de 3)</h3><p>Toda a conversa sobre internet, redes sociais e IA&#x27;s nas comunidades indígenas só faz sentido quando lembramos do que está por trás: terra, território, direitos.</p>
+<p>O Instituto Socioambiental mantém um Mapa Interativo de Povos e Terras Indígenas, gratuito, com dados atualizados sobre a sociodiversidade e distribuição territorial de mais de 280 povos — fruto de um acervo iniciado nos anos 1980. Isso é ciência de dados a serviço da defesa territorial: cada polígono no mapa é argumento contra invasão, grilagem, apagamento.</p>
+<p>Também saiu recentemente um guia prático de IA voltado a povos indígenas — “IA em foco” —, gratuito, ensinando desde o que é um algoritmo até como identificar viés em um chatbot. Com mais de 390 etnias e 290 línguas no Brasil, formação técnica crítica virou pauta de direitos.</p>
+<p>Não é uma história de povos “chegando atrasados” à modernidade. É a história de povos que pegam cada ferramenta nova — satélite, rede social, modelo de linguagem, mapa digital — e perguntam: isso serve para nos proteger ou para nos explorar? E respondem com projetos próprios, dados próprios e regras próprias.</p>
+<p>Essa é a virada mais interessante para acompanhar: povos indígenas deixando de ser objeto de estudo dos dados — para virar donos deles.</p></div><div class="lang-panel" data-lang="EN"><h3 class="post-title">How digital mapping is reshaping the defense of Indigenous lands in Brazil (Part 3 of 3)</h3><p>Any discussion around the internet, social media, and AI in Indigenous communities only makes sense when grounded in what is fundamentally at stake: land, territory, and rights.</p>
+<p>The Socio-Environmental Institute (ISA) maintains an open-access Interactive Map of Indigenous Peoples and Lands, with updated data on the territorial distribution of more than 280 Indigenous groups — rooted in an archive initiated in the 1980s. This is data science in service of territorial defense: every polygon is evidence against illegal incursions, land grabbing, erasure.</p>
+<p>A practical guide for Indigenous Peoples — “IA em foco” (AI in Focus) — was also recently published, covering everything from algorithmic literacy to identifying bias in chatbots. Across more than 390 ethnic groups and 290 languages, critical technical education has become a human rights issue.</p>
+<p>This is not a story of communities “arriving late” to modernity. It is the story of communities critically assessing each emerging tool — satellite imagery, social networks, language models, digital mapping — by asking: does this protect us or exploit us? And answering with self-determined projects and community-led frameworks.</p>
+<p>This marks one of the most critical transitions to follow: Indigenous Peoples moving from being passive objects of data extraction to autonomous data stewards.</p></div>
+        <div class="refs"><span class="refs-label">Referências &amp; fontes</span><ul><li><a href="https://lnkd.in/dEivubYm" target="_blank" rel="noopener">Mapa Interativo de Povos e Terras Indígenas (ISA)</a></li><li><a href="https://lnkd.in/d4h5gKPZ" target="_blank" rel="noopener">Guia prático de IA para povos indígenas — IA em foco</a></li></ul></div>
+        <div class="tags"><span class="tag">#PovosOriginários</span><span class="tag">#DadosAbertos</span><span class="tag">#TerritórioIndígena</span><span class="tag">#TecnologiaSocial</span><span class="tag">#DataSovereignty</span></div>
+      </article></div>
+    </section>
+<p id="no-results">Nenhum post encontrado para essa tag.</p>
+</main>
+
+<footer>
+  Compilado a partir do LinkedIn de Jefferson Melo. Publicado em <a href="https://github.com/JeffAirData/Jeff_Articles" target="_blank" rel="noopener">Jeff_Articles</a>.
+</footer>
+
+<script>
+function setLang(btn) {
+  const article = btn.closest('.post');
+  const lang = btn.getAttribute('data-lang');
+  article.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b === btn));
+  article.querySelectorAll('.lang-panel').forEach(p => p.classList.toggle('active', p.getAttribute('data-lang') === lang));
+}
+
+const searchInput = document.getElementById('tag-search');
+const clearBtn = document.getElementById('clear-btn');
+const resultCount = document.getElementById('result-count');
+const noResults = document.getElementById('no-results');
+const allPosts = Array.from(document.querySelectorAll('.post'));
+const allCategories = Array.from(document.querySelectorAll('.category'));
+const allChips = Array.from(document.querySelectorAll('.tag-chip'));
+
+function applyFilter(query) {
+  const q = query.trim().toLowerCase();
+  clearBtn.classList.toggle('visible', q.length > 0);
+  allChips.forEach(c => c.classList.toggle('active', c.textContent.slice(1).toLowerCase() === q));
+
+  if (!q) {
+    allPosts.forEach(p => p.style.display = '');
+    allCategories.forEach(c => c.style.display = '');
+    resultCount.style.display = 'none';
+    noResults.style.display = 'none';
+    return;
+  }
+
+  let matches = 0;
+  allCategories.forEach(cat => {
+    let catMatches = 0;
+    cat.querySelectorAll('.post').forEach(p => {
+      const tags = p.getAttribute('data-tags') || '';
+      const show = tags.includes(q);
+      p.style.display = show ? '' : 'none';
+      if (show) { catMatches++; matches++; }
+    });
+    cat.style.display = catMatches > 0 ? '' : 'none';
+  });
+  resultCount.style.display = 'block';
+  resultCount.textContent = matches + (matches === 1 ? ' post encontrado' : ' posts encontrados') + ' para "' + query.trim() + '"';
+  noResults.style.display = matches === 0 ? 'block' : 'none';
+}
+
+function onSearchInput() { applyFilter(searchInput.value); }
+function clearSearch() { searchInput.value = ''; applyFilter(''); searchInput.focus(); }
+function filterByTag(tag) {
+  if (searchInput.value.trim().toLowerCase() === tag) {
+    clearSearch();
+  } else {
+    searchInput.value = tag;
+    applyFilter(tag);
+  }
+}
+</script>
+
+</body>
+</html>
