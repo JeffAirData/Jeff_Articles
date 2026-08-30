@@ -14,6 +14,13 @@ com o Claude Code de forma sólida.
 
 👉 Comece por [`claude-code-guia/README.md`](./claude-code-guia/README.md)
 
+### 🗂️ [Cadernos de Dados — posts do LinkedIn](https://jeffairdata.github.io/Jeff_Articles/artigos/)
+Arquivo temático dos meus posts do LinkedIn sobre ciência de dados, ética em
+IA, filosofia e vida pública, organizados por categoria e ordem cronológica,
+com busca por tag.
+
+👉 Acesse em [jeffairdata.github.io/Jeff_Articles/artigos](https://jeffairdata.github.io/Jeff_Articles/artigos/)
+
 ## Como contribuir
 
 Contribuições são bem-vindas — seja corrigindo uma informação desatualizada,
